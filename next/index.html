@@ -199,12 +199,15 @@
   .handle:focus-visible { box-shadow: 0 0 0 4px var(--green-hi), 0 0 30px oklch(0.70 0.18 145 / .6); }
   .handle svg { width: 30px; height: 30px; }
   .readout {
-    position: absolute; z-index: 6; left: clamp(72px, var(--split), calc(100% - 72px)); top: calc(50% + 50px);
+    position: absolute; z-index: 6; left: clamp(112px, var(--split), calc(100% - 112px)); top: calc(50% + 50px);
     transform: translateX(-50%); white-space: nowrap;
     padding: 4px 10px; border-radius: 99px; background: oklch(0.13 0.008 280 / .8); color: var(--ink); font-size: 12px;
     backdrop-filter: blur(6px); pointer-events: none;
   }
   .readout em { font-style: normal; color: var(--green-hi); }
+  .lead-cue { margin-left: 8px; padding-left: 8px; border-left: 1px solid oklch(0.96 0.02 90 / .25); }
+  .lead-cue.flash { animation: cue .6s ease; }
+  @keyframes cue { 30% { color: var(--green-hi); } }
   .drag-hint { position: absolute; z-index: 6; left: clamp(84px, var(--split), calc(100% - 84px)); top: calc(50% - 64px); transform: translateX(-50%); white-space: nowrap; color: var(--green); font-size: 12px; pointer-events: none; transition: opacity .6s; }
   .duo.touched .drag-hint { opacity: 0; }
 
@@ -417,7 +420,9 @@
     .divider::before { top: -1px; bottom: auto; left: 0; right: 0; width: auto; height: 2px; }
     .handle { left: 50%; top: clamp(92px, var(--split), calc(100% - 40px)); width: 56px; height: 56px; border-width: 6px; cursor: ns-resize; background: linear-gradient(180deg, var(--cream) 50%, var(--bg) 50%); }
     .handle svg { transform: rotate(90deg); width: 24px; height: 24px; }
-    .readout { left: auto; right: 16px; top: clamp(92px, var(--split), calc(100% - 40px)); transform: translateY(-50%); }
+    .readout .rw { display: none; }
+    .readout .lead-cue { margin-left: 6px; padding-left: 6px; }
+    .readout { padding: 3px 8px; font-size: 11px; left: auto; right: 10px; top: clamp(92px, var(--split), calc(100% - 40px)); transform: translateY(-50%); }
     .drag-hint { left: 16px; top: clamp(92px, var(--split), calc(100% - 40px)); transform: translateY(-50%); padding: 3px 8px; border-radius: 99px; background: oklch(0.13 0.008 280 / .8); }
 
     .chapter { padding-block: 64px 56px; }
@@ -529,7 +534,8 @@
   <div class="handle" id="handle" role="slider" tabindex="0" aria-label="Balance between the professional side and the artist side" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50 percent professional, 50 percent artist">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6 3 12l6 6" fill="none" stroke="var(--green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="m15 6 6 6-6 6" fill="none" stroke="var(--green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
-  <span class="readout mono" aria-hidden="true">pro <em id="rPro">50</em> ◉ <em id="rArt">50</em> art</span>
+  <span class="readout mono" aria-hidden="true"><span class="rw">pro </span><em id="rPro">50</em> ◉ <em id="rArt">50</em><span class="rw"> art</span><span class="lead-cue" id="leadCue">↓ A first</span></span>
+  <span class="sr" aria-live="polite" id="leadLive"></span>
 </section>
 
 <main>
@@ -768,6 +774,24 @@
     rPro.textContent = p; rArt.textContent = a;
     handle.setAttribute('aria-valuenow', p);
     handle.setAttribute('aria-valuetext', `${p} percent professional, ${a} percent artist`);
+    if (touched) setLead(split > 50 ? 'pro' : split < 50 ? 'art' : lead);
+  }
+
+  // The heavier side leads: scrolling down from the hero shows that chapter first
+  const mainEl = document.querySelector('main'), chA = document.getElementById('pro'), chB = document.getElementById('art');
+  const bridge = document.querySelector('.bridge'), navEl = document.querySelector('nav');
+  const navA = navEl.querySelector('[data-spy="pro"]'), navB = navEl.querySelector('[data-spy="art"]');
+  const leadCue = document.getElementById('leadCue'), leadLive = document.getElementById('leadLive');
+  let lead = 'pro';
+  function setLead(next) {
+    if (next === lead) return;
+    lead = next;
+    const first = lead === 'art' ? chB : chA, second = lead === 'art' ? chA : chB;
+    mainEl.prepend(first); first.after(bridge); bridge.after(second);
+    navEl.prepend(lead === 'art' ? navB : navA);
+    leadCue.textContent = lead === 'art' ? '↓ B first' : '↓ A first';
+    leadCue.classList.remove('flash'); void leadCue.offsetWidth; leadCue.classList.add('flash');
+    leadLive.textContent = lead === 'art' ? 'Scrolling down now shows the artist side first.' : 'Scrolling down now shows the professional side first.';
   }
   const touch = () => { if (!touched) { touched = true; duo.classList.add('touched'); } };
   const fromPointer = (e) => {
