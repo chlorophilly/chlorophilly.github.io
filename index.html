@@ -1,145 +1,252 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>chlorophilly</title>
-<meta name="description" content="Watcharawich Jirawongsapan. Artist, architect-PhD, AI red teamer, TCG shop co-founder. Bangkok.">
+<meta name="description" content="Watcharawich (Philly) Jirawongsapan. Artist, architect-PhD, AI red teamer, TCG shop co-founder. Bangkok.">
 <meta property="og:title" content="chlorophilly">
 <meta property="og:description" content="Artist ◉ Architect-PhD ◉ AI Red Teamer ◉ TCG Shop Co-founder">
 <meta property="og:url" content="https://chlorophilly.com">
-<meta name="theme-color" content="#f6f1e4">
+<meta property="og:image" content="https://chlorophilly.com/img/dr-penguin.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0e0d12">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/dr-penguin.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,500;125,800&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Thai:wght@400&family=Noto+Sans+JP:wght@400&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.replace('no-js', 'js');</script>
 <style>
   :root {
+    color-scheme: dark;
     --green: oklch(0.70 0.18 145);
-    --black: oklch(0.15 0.01 280);
-    --cream: oklch(0.96 0.02 90);
-    --charcoal: oklch(0.30 0.02 240);
-    --muted: oklch(0.15 0.01 280 / 0.55);
-    --line: oklch(0.15 0.01 280 / 0.14);
+    --green-hi: oklch(0.80 0.19 142);
+    --bg: oklch(0.13 0.008 280);
+    --bg-2: oklch(0.17 0.01 280);
+    --ink: oklch(0.96 0.02 90);
+    --muted: oklch(0.96 0.02 90 / 0.56);
+    --faint: oklch(0.96 0.02 90 / 0.32);
+    --line: oklch(0.96 0.02 90 / 0.12);
+    --red: oklch(0.47 0.15 22);
     --display: "Archivo", "Arial Black", system-ui, sans-serif;
     --body: "Inter", "Noto Sans Thai", "Noto Sans JP", system-ui, sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
     --gutter: clamp(20px, 4vw, 56px);
   }
   * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   body {
-    margin: 0;
-    background: var(--cream);
-    color: var(--black);
+    margin: 0; overflow-x: hidden;
+    background: var(--bg); color: var(--ink);
     font: 400 17px/1.6 var(--body);
     -webkit-font-smoothing: antialiased;
   }
-  ::selection { background: var(--green); color: var(--black); }
+  /* film grain */
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: .07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  ::selection { background: var(--green); color: var(--bg); }
   a { color: inherit; }
+  img { max-width: 100%; display: block; }
   .wrap { padding-inline: var(--gutter); max-width: 1440px; margin: 0 auto; }
   .mono { font-family: var(--mono); font-size: 13px; letter-spacing: 0.02em; }
+  .display { font-family: var(--display); font-stretch: 125%; }
 
   /* top bar */
   .bar {
-    display: flex; justify-content: space-between; align-items: center;
-    padding-block: 22px; gap: 16px;
+    position: sticky; top: 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding-block: 16px;
+    background: linear-gradient(var(--bg) 40%, transparent);
   }
   .mark { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 500; }
   .mark svg { width: 22px; height: 22px; }
-  .bar .mono { color: var(--muted); }
-  .clock b { color: var(--black); font-weight: 500; }
+  nav { display: flex; gap: clamp(12px, 2vw, 28px); }
+  nav a { text-decoration: none; color: var(--muted); transition: color .2s; }
+  nav a:hover, nav a:focus-visible { color: var(--green-hi); outline: none; }
+  .clock { color: var(--muted); }
+  .clock b { color: var(--ink); font-weight: 500; }
   .dot {
     display: inline-block; width: 7px; height: 7px; border-radius: 50%;
     background: var(--green); margin-right: 8px; vertical-align: 1px;
+    box-shadow: 0 0 10px var(--green);
     animation: pulse 2.4s ease-in-out infinite;
   }
   @keyframes pulse { 50% { opacity: .35; } }
 
   /* hero + lens */
-  .hero { position: relative; overflow: hidden; cursor: none; touch-action: pan-y; }
-  .hero-inner { padding-block: clamp(48px, 12vh, 140px) clamp(40px, 9vh, 110px); }
+  .hero { position: relative; overflow: hidden; touch-action: pan-y; }
+  .hero::before {
+    content: ""; position: absolute; inset: -20% -10% auto auto; width: 70vw; height: 70vw; pointer-events: none;
+    background: radial-gradient(closest-side, oklch(0.70 0.18 145 / .16), transparent);
+  }
+  @media (hover: hover) { .hero { cursor: none; } .hero a { cursor: none; } }
+  .hero-inner { position: relative; padding-block: clamp(36px, 8vh, 96px) clamp(48px, 9vh, 110px); }
   .eyebrow { color: var(--muted); margin: 0 0 18px; }
   h1 {
-    font-family: var(--display);
-    font-stretch: 125%;
-    font-weight: 800;
-    font-size: min(12.6vw, 13.5rem);
-    line-height: 0.82;
-    letter-spacing: -0.045em;
-    margin: 0 0 0 -0.04em;
-    white-space: nowrap;
+    font-family: var(--display); font-stretch: 125%; font-weight: 800;
+    font-size: min(12.6vw, 13.5rem); line-height: 0.82; letter-spacing: -0.045em;
+    margin: 0 0 0 -0.04em; white-space: nowrap; position: relative;
   }
+  .hero-row { display: grid; grid-template-columns: 1.25fr 1fr; gap: 32px; align-items: start; }
   .stack {
-    margin: clamp(22px, 4vh, 40px) 0 0;
+    margin: clamp(24px, 4vh, 44px) 0 0;
     font-family: var(--display); font-stretch: 125%; font-weight: 500;
-    font-size: clamp(15px, 2vw, 26px); letter-spacing: -0.01em;
+    font-size: clamp(16px, 2vw, 26px); letter-spacing: -0.01em;
   }
   .stack i { font-style: normal; color: var(--green); padding: 0 .35em; }
-  .sub { margin: 12px 0 0; color: var(--muted); max-width: 34em; }
-  .hint { position: absolute; right: var(--gutter); bottom: 22px; color: var(--muted); margin: 0; }
+  .sub { margin: 14px 0 0; color: var(--muted); max-width: 32em; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    padding: 12px 20px; border-radius: 99px; border: 1px solid var(--line);
+    font-family: var(--mono); font-size: 14px; transition: background .2s, color .2s, border-color .2s;
+  }
+  .btn.solid { background: var(--green); color: var(--bg); border-color: var(--green); font-weight: 500; }
+  .btn:hover, .btn:focus-visible { border-color: var(--green-hi); color: var(--green-hi); background: transparent; outline: none; }
+  .btn.solid:hover, .btn.solid:focus-visible { background: var(--green-hi); color: var(--bg); }
+
+  .mascot { position: relative; margin: clamp(-150px, -9vw, -40px) 0 0 auto; width: min(100%, 460px); aspect-ratio: 1; max-width: 100%; }
+  .mascot img {
+    position: absolute; inset: 9%; width: 82%; height: 82%; object-fit: cover; border-radius: 50%;
+    box-shadow: 0 0 0 8px var(--green), 0 30px 80px oklch(0 0 0 / .6), 0 0 90px oklch(0.70 0.18 145 / .25);
+  }
+  .mascot svg { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 40s linear infinite; }
+  .mascot text { fill: var(--muted); font: 500 10.5px var(--mono); letter-spacing: .18em; text-transform: uppercase; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .hint { position: absolute; right: var(--gutter); bottom: 18px; color: var(--faint); margin: 0; }
   @media (hover: none) { .hint { display: none; } }
 
   .xray {
     position: absolute; inset: 0; pointer-events: none;
-    background-color: var(--black);
+    background-color: oklch(0.08 0.02 150);
     background-image:
-      linear-gradient(oklch(0.70 0.18 145 / .18) 1px, transparent 1px),
-      linear-gradient(90deg, oklch(0.70 0.18 145 / .18) 1px, transparent 1px);
+      linear-gradient(oklch(0.70 0.18 145 / .22) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(0.70 0.18 145 / .22) 1px, transparent 1px);
     background-size: 28px 28px;
-    color: var(--cream);
+    color: var(--green-hi);
     clip-path: circle(var(--r, 0px) at var(--x, 50%) var(--y, 50%));
   }
-  .xray h1 { color: transparent; -webkit-text-stroke: 1.5px var(--green); }
-  .xray .stack, .xray .sub, .xray .eyebrow { color: var(--green); }
-  .xray .stack i { color: var(--cream); }
-  .xray .alt { display: inline; }
+  .xray::before { display: none; }
+  .xray h1 { color: transparent; -webkit-text-stroke: 1.5px var(--green-hi); }
+  .xray .stack, .xray .sub, .xray .eyebrow { color: var(--green-hi); }
+  .xray .stack i { color: var(--ink); }
+  .xray .btn { border-color: var(--green); color: var(--green-hi); background: transparent; }
+  .xray .mascot img { filter: grayscale(1) contrast(1.3) sepia(1) hue-rotate(55deg) saturate(2.4) brightness(.85); box-shadow: 0 0 0 8px var(--green-hi); }
+  /* alt copy overlays the main copy so the lens layer never reflows out of alignment */
+  .eyebrow, .sub { position: relative; }
   .alt { display: none; }
-  .xray .main { display: none; }
+  .xray .main { visibility: hidden; }
+  .xray .alt { display: block; position: absolute; left: 0; top: 0; right: 0; }
+  .xray .eyebrow .alt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ring {
     position: absolute; left: 0; top: 0; pointer-events: none;
     width: calc(var(--r, 0px) * 2); height: calc(var(--r, 0px) * 2);
     border: 9px solid var(--green); border-radius: 50%;
+    box-shadow: 0 0 30px oklch(0.70 0.18 145 / .5), inset 0 0 30px oklch(0.70 0.18 145 / .35);
     transform: translate(calc(var(--x, 50%) - var(--r, 0px)), calc(var(--y, 50%) - var(--r, 0px)));
   }
 
-  /* index */
-  .rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
-  .index { list-style: none; margin: 0; padding: 0; }
-  .row {
-    display: grid; grid-template-columns: minmax(120px, 1fr) 3fr; gap: 12px 40px;
-    padding-block: clamp(28px, 5vh, 52px);
-    border-bottom: 1px solid var(--line);
+  /* marquee */
+  .marquee { overflow: hidden; border-block: 1px solid var(--line); padding-block: 18px; }
+  .marquee-track { display: flex; width: max-content; animation: slide 38s linear infinite; }
+  .marquee span {
+    font-family: var(--display); font-stretch: 125%; font-weight: 800; white-space: nowrap;
+    font-size: clamp(28px, 5vw, 64px); letter-spacing: -0.03em; padding-right: .5em;
   }
-  .row .label { color: var(--muted); padding-top: 6px; }
-  .row .label span { display: block; color: var(--black); font-weight: 500; margin-top: 2px; }
-  .row h2 {
-    font-family: var(--display); font-stretch: 125%; font-weight: 800;
-    font-size: clamp(26px, 3.6vw, 48px); line-height: 1; letter-spacing: -0.03em;
-    margin: 0 0 14px;
-  }
-  .row h2::after {
-    content: ""; display: inline-block; width: .32em; height: .32em; border-radius: 50%;
-    border: .09em solid var(--green); margin-left: .2em; vertical-align: .08em;
-    transform: scale(0); transition: transform .35s cubic-bezier(.3,1.6,.5,1);
-  }
-  .row:hover h2::after { transform: scale(1); }
-  .row p { margin: 0 0 10px; max-width: 40em; }
-  .row .meta { color: var(--muted); margin-top: 14px; }
-  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding: 0; list-style: none; }
-  .tags li { border: 1px solid var(--line); border-radius: 99px; padding: 3px 11px; }
+  .marquee span:nth-child(even) { color: transparent; -webkit-text-stroke: 1px var(--faint); }
+  .marquee span b { color: var(--green); font-weight: 800; -webkit-text-stroke: 0; }
+  @keyframes slide { to { transform: translateX(-50%); } }
 
-  /* timeline */
-  .timeline { padding-block: clamp(48px, 9vh, 96px) 0; display: grid; grid-template-columns: minmax(120px, 1fr) 3fr; gap: 12px 40px; }
+  /* section heads */
+  section.block { padding-block: clamp(72px, 13vh, 150px) 0; }
+  .sec-head { display: grid; grid-template-columns: minmax(120px, 1fr) 3fr; gap: 12px 40px; margin-bottom: clamp(28px, 5vh, 56px); }
+  .sec-head .mono { color: var(--muted); padding-top: 10px; }
+  .sec-head .mono b { display: block; color: var(--green); font-weight: 500; }
+  h2 {
+    font-family: var(--display); font-stretch: 125%; font-weight: 800;
+    font-size: clamp(34px, 5.4vw, 76px); line-height: .95; letter-spacing: -0.035em; margin: 0 0 18px;
+  }
+  .lede { color: var(--muted); max-width: 38em; margin: 0; }
+  .lede strong { color: var(--ink); font-weight: 500; }
+
+  /* gallery */
+  .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-flow: dense; gap: clamp(8px, 1vw, 14px); }
+  .tile {
+    position: relative; overflow: hidden; border-radius: 6px; background: var(--bg-2);
+    aspect-ratio: 1; padding: 0; border: 0; cursor: zoom-in; color: inherit;
+  }
+  .tile.big { grid-column: span 2; grid-row: span 2; }
+  .tile img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1), filter .4s; }
+  .tile:hover img, .tile:focus-visible img { transform: scale(1.05); }
+  .tile::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    box-shadow: inset 0 0 0 0 var(--green); transition: box-shadow .25s;
+  }
+  .tile:hover::after, .tile:focus-visible::after { box-shadow: inset 0 0 0 3px var(--green); }
+  .tile:focus-visible { outline: none; }
+  .tile figcaption {
+    position: absolute; left: 10px; bottom: 10px; padding: 4px 10px; border-radius: 99px;
+    background: oklch(0.13 0.008 280 / .75); backdrop-filter: blur(6px);
+    font: 12px var(--mono); color: var(--ink); opacity: 0; transform: translateY(6px); transition: .3s;
+  }
+  .tile:hover figcaption, .tile:focus-visible figcaption { opacity: 1; transform: none; }
+  @media (hover: none) { .tile figcaption { opacity: 1; transform: none; } }
+  .feature { margin: clamp(56px, 10vh, 110px) auto 0; max-width: 1120px; }
+  .feature .tile { aspect-ratio: 1000 / 656; width: 100%; border-radius: 4px; box-shadow: 0 40px 120px oklch(0 0 0 / .7), 0 0 0 1px var(--line); }
+  .feature .tile img { filter: contrast(1.04); }
+  .feature .tile:hover img, .feature .tile:focus-visible img { transform: scale(1.02); }
+  .feature-cap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; margin: 18px 0 0; color: var(--muted); }
+  .feature-cap span:first-child { color: var(--green); padding-left: 28px; position: relative; }
+  .feature-cap span:first-child::before { content: ""; position: absolute; left: 0; top: 50%; width: 18px; height: 1px; background: var(--green); }
+  .art-notes { display: grid; grid-template-columns: minmax(120px, 1fr) 3fr; gap: 12px 40px; margin-top: clamp(28px, 5vh, 48px); }
+  .art-notes .meta { color: var(--muted); }
+  .process { display: flex; gap: 18px; align-items: center; }
+  .process img { width: 84px; height: 120px; object-fit: cover; border-radius: 6px; flex: none; }
+
+  /* GGG band */
+  .ggg { margin-top: clamp(72px, 13vh, 150px); background: var(--red); color: var(--ink); padding-block: clamp(56px, 10vh, 110px) 0; position: relative; overflow: hidden; }
+  .ggg .sec-head .mono { color: oklch(0.96 0.02 90 / .7); }
+  .ggg .sec-head .mono b { color: var(--green-hi); }
+  .ggg .lede { color: oklch(0.96 0.02 90 / .82); }
+  .ggg-strip { overflow: hidden; margin-top: clamp(32px, 6vh, 60px); padding-bottom: clamp(56px, 10vh, 110px); }
+  .ggg-track { display: flex; gap: 14px; width: max-content; animation: slide 50s linear infinite reverse; }
+  .ggg-track img { width: clamp(140px, 17vw, 230px); aspect-ratio: 1; object-fit: cover; border-radius: 50%; border: 5px solid oklch(0.13 0.008 280 / .35); transition: transform .3s, border-color .3s; }
+  .ggg-track img:hover { transform: scale(1.06) rotate(-3deg); border-color: var(--green-hi); }
+  .ggg-strip:hover .ggg-track { animation-play-state: paused; }
+  .ggg .btn { border-color: oklch(0.96 0.02 90 / .35); }
+
+  /* photos */
+  .photos { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(8px, 1vw, 14px); }
+  .photos .tile { aspect-ratio: 4 / 5; }
+  @media (min-width: 861px) { .photos .tile:nth-child(odd) { transform: translateY(clamp(12px, 3vw, 40px)); } }
+
+  /* about */
+  .about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
+  .portrait { position: relative; margin: 0; }
+  .portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 6px; filter: grayscale(.25) contrast(1.05); }
+  .portrait::after {
+    content: ""; position: absolute; width: 34%; aspect-ratio: 1; right: -7%; top: -7%;
+    border: 10px solid var(--green); border-radius: 50%; box-shadow: 0 0 40px oklch(0.70 0.18 145 / .35);
+  }
+  .portrait figcaption { margin-top: 14px; color: var(--muted); }
+  .facts { list-style: none; padding: 0; margin: 28px 0 0; border-top: 1px solid var(--line); }
+  .facts li { display: grid; grid-template-columns: 7.5em 1fr; gap: 16px; padding-block: 18px; border-bottom: 1px solid var(--line); }
+  .facts .mono { color: var(--green); padding-top: 3px; }
+  .facts h3 { margin: 0 0 4px; font-family: var(--display); font-stretch: 125%; font-weight: 800; font-size: clamp(19px, 2vw, 24px); letter-spacing: -0.02em; }
+  .facts p { margin: 0; color: var(--muted); }
+
+  .timeline { margin-top: clamp(48px, 9vh, 96px); display: grid; grid-template-columns: minmax(120px, 1fr) 3fr; gap: 12px 40px; }
   .tl-label { color: var(--muted); padding-top: 4px; }
   .timeline ol { list-style: none; margin: 0; padding: 0; }
-  .timeline li { display: grid; grid-template-columns: 4.5em 1fr; gap: 12px; padding-block: 9px; border-bottom: 1px dashed var(--line); }
-  .timeline li b { font-weight: 500; }
+  .timeline li { display: grid; grid-template-columns: 4.5em 1fr; gap: 12px; padding-block: 9px; border-bottom: 1px dashed var(--line); color: var(--muted); }
+  .timeline li b { font-weight: 500; color: var(--ink); }
   .timeline li:hover b { color: var(--green); }
   .timeline li:last-child b::after { content: " ●"; color: var(--green); animation: pulse 2.4s ease-in-out infinite; }
 
-  /* thread */
-  .thread { padding-block: clamp(64px, 14vh, 160px); }
+  .thread { padding-block: clamp(80px, 15vh, 170px); }
   .thread blockquote {
     margin: 0; max-width: 20em;
     font-family: var(--display); font-stretch: 125%; font-weight: 500;
@@ -148,130 +255,257 @@
   .thread blockquote em { font-style: normal; color: var(--green); }
   .thread .mono { color: var(--muted); display: block; margin-bottom: 22px; }
 
-  /* links */
-  .links { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-  .links a {
-    display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 16px;
-    padding-block: 18px; border-bottom: 1px solid var(--line); text-decoration: none;
+  /* contact */
+  .contact { border-top: 1px solid var(--line); padding-block: clamp(64px, 12vh, 130px) clamp(40px, 7vh, 72px); }
+  .contact h2 { font-size: clamp(56px, 11vw, 170px); margin-bottom: 8px; }
+  .contact h2 span { color: var(--green); }
+  .email {
+    display: inline-flex; align-items: baseline; gap: 14px; flex-wrap: wrap; text-decoration: none;
     font-family: var(--display); font-stretch: 125%; font-weight: 500;
-    font-size: clamp(20px, 2.6vw, 34px); letter-spacing: -0.02em;
+    font-size: clamp(22px, 4vw, 52px); letter-spacing: -0.02em; overflow-wrap: anywhere;
+    background: linear-gradient(var(--green), var(--green)) 0 100% / 0 3px no-repeat; transition: background-size .4s, color .2s;
+  }
+  .email:hover, .email:focus-visible { background-size: 100% 3px; color: var(--green-hi); outline: none; }
+  .copy { margin-left: 8px; vertical-align: middle; background: transparent; color: var(--muted); cursor: pointer; }
+  .links { list-style: none; margin: clamp(48px, 9vh, 88px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 40px; }
+  .links a {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+    padding-block: 16px; border-bottom: 1px solid var(--line); text-decoration: none;
+    font-family: var(--display); font-stretch: 125%; font-weight: 500;
+    font-size: clamp(18px, 2vw, 26px); letter-spacing: -0.02em;
     transition: padding .3s ease, color .2s;
   }
-  .links a .mono { color: var(--muted); font-family: var(--mono); font-stretch: 100%; }
-  .links a:hover, .links a:focus-visible { padding-left: 14px; color: var(--green); outline: none; }
-  .links a:hover .mono { color: var(--black); }
+  .links a .mono { color: var(--muted); font-stretch: 100%; text-align: right; }
+  .links a:hover, .links a:focus-visible { padding-left: 12px; color: var(--green-hi); outline: none; }
 
-  footer {
-    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
-    padding-block: 48px 36px; color: var(--muted);
+  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-block: 28px 36px; color: var(--muted); border-top: 1px solid var(--line); }
+
+  /* lightbox */
+  dialog.lb { padding: 0; border: 0; background: transparent; max-width: 92vw; max-height: 92vh; }
+  dialog.lb::backdrop { background: oklch(0.08 0.01 280 / .92); backdrop-filter: blur(6px); }
+  dialog.lb img { max-width: 92vw; max-height: 86vh; width: auto; border-radius: 6px; }
+  dialog.lb p { margin: 10px 0 0; color: var(--muted); text-align: center; }
+  dialog.lb button { position: fixed; top: 16px; right: 16px; }
+
+  /* reveal */
+  .js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 860px) {
+    nav .opt { display: none; }
+    .hero-row, .about { grid-template-columns: 1fr; }
+    .mascot { margin: 8px auto 0; width: min(78vw, 380px); }
+    .gallery, .photos { grid-template-columns: repeat(2, 1fr); }
+    .links { grid-template-columns: 1fr; }
+    .portrait { max-width: 420px; }
   }
-  .langs { font-size: 15px; }
-
   @media (max-width: 720px) {
     body { font-size: 16px; }
-    .row, .timeline { grid-template-columns: 1fr; }
-    .row .label span { display: inline; margin-left: 6px; }
-    .bar .loc { display: none; }
+    .sec-head, .art-notes, .timeline { grid-template-columns: 1fr; }
+    .sec-head .mono { padding-top: 0; }
+    .clock .loc { display: none; }
   }
+  @media (max-width: 480px) { .clock { display: none; } }
   @media (prefers-reduced-motion: reduce) {
-    .dot { animation: none; }
-    .links a, .row h2::after { transition: none; }
+    html { scroll-behavior: auto; }
+    .dot, .marquee-track, .ggg-track, .mascot svg, .timeline li:last-child b::after { animation: none; }
+    .js .reveal { opacity: 1; transform: none; transition: none; }
+    .tile img, .links a, .email { transition: none; }
   }
 </style>
 </head>
 <body>
 
 <header class="wrap bar">
-  <a class="mark" href="/" aria-label="chlorophilly home">
-    <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="currentColor"/><circle cx="32" cy="32" r="17" fill="none" stroke="oklch(0.70 0.18 145)" stroke-width="7"/><circle cx="32" cy="32" r="5" fill="oklch(0.96 0.02 90)"/></svg>
+  <a class="mark" href="#top" aria-label="chlorophilly home">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="oklch(0.96 0.02 90)"/><circle cx="32" cy="32" r="17" fill="none" stroke="oklch(0.70 0.18 145)" stroke-width="7"/><circle cx="32" cy="32" r="5" fill="oklch(0.13 0.008 280)"/></svg>
     chlorophilly
   </a>
-  <span class="mono clock"><span class="loc">Green Glasses Gang Multiverse ◉ </span><span class="dot"></span>BKK <b id="time">--:--</b></span>
+  <nav class="mono" aria-label="Sections">
+    <a class="opt" href="#art">art</a>
+    <a class="opt" href="#photos">photos</a>
+    <a class="opt" href="#about">about</a>
+    <a href="#contact">contact</a>
+  </nav>
+  <span class="mono clock"><span class="loc">GGG Multiverse ◉ </span><span class="dot"></span>BKK <b id="time">--:--</b></span>
 </header>
 
-<section class="hero" id="hero" aria-label="Intro">
+<section class="hero" id="top" aria-label="Intro">
   <div class="wrap hero-inner" id="heroInner">
     <p class="eyebrow mono"><span class="main">Watcharawich Jirawongsapan ◉ Bangkok</span><span class="alt">Dr. Penguin ◉ Bangkok-based, Japan-obsessed</span></p>
     <h1>chlorophilly</h1>
-    <p class="stack">Artist<i>◉</i>Architect-PhD<i>◉</i>AI Red Teamer<i>◉</i>TCG Shop Co-founder</p>
-    <p class="sub"><span class="main">Draws playmats, breaks AI, runs a card shop in Bangkok. Philly to most. Dr. Penguin to some.</span><span class="alt">You found the green glasses. Everything looks like a blueprint now. 13.75°N 100.50°E</span></p>
+    <div class="hero-row">
+      <div>
+        <p class="stack">Artist<i>◉</i>Architect-PhD<i>◉</i>AI Red Teamer<i>◉</i>TCG Shop Co-founder</p>
+        <p class="sub"><span class="main">Draws playmats, breaks AI, runs a card shop in Bangkok. Philly to most. Dr. Penguin to some.</span><span class="alt">You found the green glasses. Everything looks like a blueprint now. 13.75°N 100.50°E</span></p>
+        <div class="cta">
+          <a class="btn solid" href="#art">See the work ↓</a>
+          <a class="btn" href="#contact">Say hi</a>
+        </div>
+      </div>
+      <figure class="mascot">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <defs><path id="circ" d="M100,100 m-92,0 a92,92 0 1,1 184,0 a92,92 0 1,1 -184,0"/></defs>
+          <text><textPath href="#circ">Dr. Penguin ◉ Green Glasses Gang ◉ Bangkok ◉ Perpetual Student ◉ </textPath></text>
+        </svg>
+        <img src="img/dr-penguin.jpg" width="1080" height="1080" alt="Dr. Penguin, a painted penguin in a graduation cap with a green monocle, holding a phone">
+      </figure>
+    </div>
   </div>
   <p class="hint mono" aria-hidden="true">move the monocle</p>
 </section>
 
-<main class="wrap">
-  <ol class="index">
-    <li class="row">
-      <div class="label mono">01<span>Art</span></div>
-      <div>
-        <h2>I draw things.</h2>
-        <p>Playmats, and card art for Vibes TCG. Years of pulling a beautiful card and wondering who drew it. Now some of them are mine.</p>
-        <p>Then there is Green Glasses Gang: a penguin with a green monocle and a lot of opinions about art, plus the multiverse around him.</p>
-        <p class="meta mono">Collected on OpenSea, Foundation and Reddit Collectible Avatars ◉ Exhibited at Thailand Blockchain Genesis 2023</p>
-        <p>Artist on the side (and also not on the side).</p>
-        <ul class="tags mono"><li>illustration</li><li>playmats</li><li>card art</li><li>#greenglassesgang</li></ul>
-      </div>
-    </li>
-    <li class="row">
-      <div class="label mono">02<span>Shop</span></div>
-      <div>
-        <h2>Anubis Cards &amp; Craft</h2>
-        <p>Co-founder of a card shop, event venue and 140+ member community in Bangkok. Magic, Lorcana, Pokémon, One Piece, Riftbound. Weeknight casuals, weekend tournaments, art workshops in between.</p>
-        <p>When we opened, Bangkok had no Lorcana scene. No regulars, no events, no local meta. We built it table by table.</p>
-        <ul class="tags mono"><li>community</li><li>events</li><li>Lorcana rulings</li></ul>
-      </div>
-    </li>
-    <li class="row">
-      <div class="label mono">03<span>AI</span></div>
-      <div>
-        <h2>Breaking models, politely.</h2>
-        <p>I red team AI systems as a Japanese language specialist. Finding where models fail, so they fail less. Before that, two years of blockchain research.</p>
-        <ul class="tags mono"><li>red teaming</li><li>日本語</li><li>web3 research</li></ul>
-      </div>
-    </li>
-    <li class="row">
-      <div class="label mono">04<span>Research</span></div>
-      <div>
-        <h2>Doctor of Engineering.</h2>
-        <p>Surveyed all 70 pro baseball and football home stadiums in Japan and built a six-type typology of how they become community space beyond game day. The University of Tokyo, MEXT scholar, 2024.</p>
-        <p class="meta mono">M.Arch, Chulalongkorn University ◉ 261 buildings in Nan and Phayao, measured in color. Blackness and chroma, not hue, give a town its identity.</p>
-      </div>
-    </li>
-  </ol>
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Artist <b>◉</b></span><span>Architect-PhD <b>◉</b></span><span>AI Red Teamer <b>◉</b></span><span>Card Shop Co-founder <b>◉</b></span><span>Photographer <b>◉</b></span><span>Perpetual Student <b>◉</b></span>
+    <span>Artist <b>◉</b></span><span>Architect-PhD <b>◉</b></span><span>AI Red Teamer <b>◉</b></span><span>Card Shop Co-founder <b>◉</b></span><span>Photographer <b>◉</b></span><span>Perpetual Student <b>◉</b></span>
+  </div>
+</div>
 
-  <section class="timeline" aria-label="Timeline">
-    <span class="mono tl-label">so far</span>
-    <ol class="mono">
-      <li><b>2017</b><span>Architectural intern, Studio NASCA, Tokyo</span></li>
-      <li><b>2018</b><span>M.Arch, Chulalongkorn University</span></li>
-      <li><b>2022</b><span>Co-founded Changlor. Art direction</span></li>
-      <li><b>2023</b><span>Creator, Reddit Collectible Avatars</span></li>
-      <li><b>2024</b><span>D.Eng, The University of Tokyo</span></li>
-      <li><b>2025</b><span>Co-founded Anubis Cards &amp; Craft</span></li>
-      <li><b>2026</b><span>AI red teaming ◉ card art in Vibes TCG</span></li>
-    </ol>
+<main>
+  <section class="block wrap" id="art" aria-labelledby="art-h">
+    <div class="sec-head reveal">
+      <p class="mono"><b>01</b>Art</p>
+      <div>
+        <h2 id="art-h">I draw things.</h2>
+        <p class="lede">Playmats, card art for <strong>Vibes TCG</strong>, and a whole multiverse of characters. Grayscale worlds, one green light. Years of pulling a beautiful card and wondering who drew it. Now some of them are mine.</p>
+      </div>
+    </div>
+
+    <div class="gallery reveal">
+      <button class="tile big" type="button"><img src="img/art-02.jpg" loading="lazy" alt="Illustration of a young man in a black hoodie wrapped in green lightning"></button>
+      <button class="tile big" type="button"><img src="img/art-03.jpg" loading="lazy" alt="Horned sorceress casting green slashes against a purple sky"></button>
+      <button class="tile" type="button"><img src="img/art-05.jpg" loading="lazy" alt="White-haired swordsman with green glasses on a red background"></button>
+      <button class="tile" type="button"><img src="img/art-08.jpg" loading="lazy" alt="Masked figure under a black umbrella on teal"></button>
+      <button class="tile" type="button"><img src="img/art-09.jpg" loading="lazy" alt="Woman in a kimono holding a skewer, red background"></button>
+      <button class="tile" type="button"><img src="img/art-04.jpg" loading="lazy" alt="Grayscale character whose head opens to reveal an Ethereum logo, red background"></button>
+      <button class="tile big" type="button"><img src="img/art-13.jpg" loading="lazy" alt="Tiny figure at the end of a vast glowing tunnel"></button>
+      <button class="tile big" type="button"><img src="img/art-01.jpg" loading="lazy" alt="Armored heroine with green visor over a dark teal background"></button>
+    </div>
+
+    <figure class="feature reveal">
+      <button class="tile" type="button"><img src="img/art-12.jpg" loading="lazy" width="1000" height="656" alt="Three silhouetted riders leaping under three white moons above a grayscale battle, eyes glowing green"></button>
+      <p class="feature-cap mono"><span>featured</span><span>Grayscale world ◉ one green light</span></p>
+    </figure>
+
+    <div class="art-notes reveal">
+      <div class="process">
+        <img src="img/process.jpg" loading="lazy" alt="Philly drawing on an iPad">
+      </div>
+      <p class="meta mono">Collected on OpenSea, Foundation and Reddit Collectible Avatars ◉ Exhibited at Thailand Blockchain Genesis 2023 ◉ Artist on the side (and also not on the side).</p>
+    </div>
   </section>
 
-  <section class="thread" aria-label="The common thread">
-    <span class="mono">the common thread</span>
-    <blockquote>How does a place tell people who they are? A townscape does it with <em>color</em>. A stadium does it on a Tuesday. A card shop does it on a Friday night.</blockquote>
+  <section class="ggg" id="ggg" aria-labelledby="ggg-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="mono"><b>02</b>Universe</p>
+        <div>
+          <h2 id="ggg-h">Green Glasses Gang</h2>
+          <p class="lede">A penguin with a green monocle and a lot of opinions about art. Plus everyone else who can feel the bubble multiverse. Started as a Reddit Collectible Avatar collection, still growing.</p>
+          <div class="cta">
+            <a class="btn" href="https://foundation.app/@chlorophilly" target="_blank" rel="noopener">Foundation ↗</a>
+            <a class="btn" href="https://lit.link/en/chlorophilly" target="_blank" rel="noopener">All collections ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ggg-strip" aria-label="Green Glasses Gang characters">
+      <div class="ggg-track">
+        <img src="img/ggg-01.jpg" loading="lazy" alt="Penguin with round green glasses"><img src="img/ggg-02.jpg" loading="lazy" alt="Capybara in a top hat and green monocle"><img src="img/ggg-03.jpg" loading="lazy" alt="Otter with green glasses"><img src="img/ggg-04.jpg" loading="lazy" alt="Cartoon penguin with green glasses and a wand"><img src="img/ggg-05.jpg" loading="lazy" alt="Skull-hooded character with green glasses"><img src="img/ggg-06.jpg" loading="lazy" alt="Bandaged top-hat character with green glasses"><img src="img/ggg-07.jpg" loading="lazy" alt="Tribal-masked character with green glasses"><img src="img/ggg-08.jpg" loading="lazy" alt="Flame creature with a monocle and mustache"><img src="img/ggg-09.jpg" loading="lazy" alt="Spiky-haired character with a green eye"><img src="img/ggg-10.jpg" loading="lazy" alt="Witch-hat character with a small bear"><img src="img/ggg-11.jpg" loading="lazy" alt="Horned shadow creature with green flames"><img src="img/ggg-12.jpg" loading="lazy" alt="Horned warrior with green smoke">
+        <img src="img/ggg-01.jpg" loading="lazy" alt=""><img src="img/ggg-02.jpg" loading="lazy" alt=""><img src="img/ggg-03.jpg" loading="lazy" alt=""><img src="img/ggg-04.jpg" loading="lazy" alt=""><img src="img/ggg-05.jpg" loading="lazy" alt=""><img src="img/ggg-06.jpg" loading="lazy" alt=""><img src="img/ggg-07.jpg" loading="lazy" alt=""><img src="img/ggg-08.jpg" loading="lazy" alt=""><img src="img/ggg-09.jpg" loading="lazy" alt=""><img src="img/ggg-10.jpg" loading="lazy" alt=""><img src="img/ggg-11.jpg" loading="lazy" alt=""><img src="img/ggg-12.jpg" loading="lazy" alt="">
+      </div>
+    </div>
   </section>
 
-  <ul class="links" aria-label="Elsewhere">
-    <li><a href="https://x.com/theChlorophilly" rel="me noopener" target="_blank">Art on X <span class="mono">@theChlorophilly ↗</span></a></li>
-    <li><a href="https://www.instagram.com/chlorophilly.verse/" rel="me noopener" target="_blank">Instagram <span class="mono">@chlorophilly.verse ↗</span></a></li>
-    <li><a href="https://x.com/0x_philly" rel="me noopener" target="_blank">Research on X <span class="mono">@0x_philly ↗</span></a></li>
-    <li><a href="https://www.facebook.com/AnubisCardsandCraft" rel="noopener" target="_blank">Anubis <span class="mono">Cards &amp; Craft ↗</span></a></li>
-    <li><a href="https://www.linkedin.com/in/watcharawich-jirawongsapan/" rel="me noopener" target="_blank">LinkedIn <span class="mono">Watcharawich ↗</span></a></li>
-    <li><a href="https://lit.link/en/chlorophilly" rel="me noopener" target="_blank">Everything else <span class="mono">lit.link ↗</span></a></li>
-  </ul>
+  <section class="block wrap" id="photos" aria-labelledby="ph-h">
+    <div class="sec-head reveal">
+      <p class="mono"><b>03</b>Photography</p>
+      <div>
+        <h2 id="ph-h">Architect eyes never switch off.</h2>
+        <p class="lede">I shoot places. Edges, frames, and the way people fill a space, or leave it empty. Yes, a lot of stadiums.</p>
+      </div>
+    </div>
+    <div class="photos reveal">
+      <button class="tile" type="button"><img src="img/photo-stadium.jpg" loading="lazy" alt="Empty stadium stands and a green pitch under a blue sky, Japan"><figcaption>Off day, Japan</figcaption></button>
+      <button class="tile" type="button"><img src="img/photo-lake.jpg" loading="lazy" alt="Philly sitting on a wooden pier over a still mountain lake"><figcaption>Somewhere quiet, Austria</figcaption></button>
+      <button class="tile" type="button"><img src="img/photo-matchday.jpg" loading="lazy" alt="Supporters in blue waving flags outside a stadium on matchday"><figcaption>Matchday, Japan</figcaption></button>
+      <button class="tile" type="button"><img src="img/photo-jelly.jpg" loading="lazy" alt="Jellyfish drifting in a round glowing aquarium tank"><figcaption>A monocle, basically</figcaption></button>
+    </div>
+    <p class="mono" style="margin-top:clamp(40px,7vh,72px);color:var(--muted)">More on <a href="https://www.instagram.com/chlorophilly/" target="_blank" rel="noopener">@chlorophilly ↗</a></p>
+  </section>
+
+  <section class="block wrap" id="about" aria-labelledby="about-h">
+    <div class="sec-head reveal">
+      <p class="mono"><b>04</b>About</p>
+      <div><h2 id="about-h">Hi, I'm Philly.</h2></div>
+    </div>
+    <div class="about">
+      <figure class="portrait reveal">
+        <img src="img/philly.jpg" loading="lazy" width="737" height="737" alt="Portrait of Philly in a black turtleneck and blazer against a concrete wall">
+        <figcaption class="mono">Watcharawich Jirawongsapan ◉ ไทย ◉ English ◉ 日本語</figcaption>
+      </figure>
+      <div class="reveal">
+        <p class="lede">Architect by training, artist by default, researcher by habit. Bangkok-based, Japan-obsessed. I like systems, stories, and places where people gather for reasons bigger than the reason on the sign.</p>
+        <ul class="facts">
+          <li><span class="mono">shop</span><div><h3>Anubis Cards &amp; Craft</h3><p>Co-founder of a card shop, event venue and 140+ member community in Bangkok. Magic, Lorcana, Pokémon, One Piece, Riftbound. When we opened, Bangkok had no Lorcana scene. We built it table by table.</p></div></li>
+          <li><span class="mono">ai</span><div><h3>Breaking models, politely.</h3><p>I red team AI systems as a Japanese language specialist. Finding where models fail, so they fail less. Before that, two years of blockchain research.</p></div></li>
+          <li><span class="mono">research</span><div><h3>Doctor of Engineering.</h3><p>Surveyed all 70 pro baseball and football home stadiums in Japan and built a typology of how they become community space beyond game day. The University of Tokyo, MEXT scholar, 2024. Before that, an M.Arch at Chulalongkorn measuring 261 buildings in color.</p></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline reveal" aria-label="Timeline">
+      <span class="mono tl-label">so far</span>
+      <ol class="mono">
+        <li><b>2017</b><span>Architectural intern, Studio NASCA, Tokyo</span></li>
+        <li><b>2018</b><span>M.Arch, Chulalongkorn University</span></li>
+        <li><b>2022</b><span>Co-founded Changlor. Art direction</span></li>
+        <li><b>2023</b><span>Creator, Reddit Collectible Avatars</span></li>
+        <li><b>2024</b><span>D.Eng, The University of Tokyo</span></li>
+        <li><b>2025</b><span>Co-founded Anubis Cards &amp; Craft</span></li>
+        <li><b>2026</b><span>AI red teaming ◉ card art in Vibes TCG</span></li>
+      </ol>
+    </div>
+
+    <div class="thread reveal">
+      <span class="mono">the common thread</span>
+      <blockquote>How does a place tell people who they are? A townscape does it with <em>color</em>. A stadium does it on a Tuesday. A card shop does it on a Friday night.</blockquote>
+    </div>
+  </section>
+
+  <section class="contact wrap" id="contact" aria-labelledby="contact-h">
+    <p class="mono" style="color:var(--muted);margin:0 0 12px"><b style="color:var(--green);font-weight:500">05</b> Contact</p>
+    <h2 id="contact-h">Say hi<span>.</span></h2>
+    <p class="lede" style="margin-bottom:22px">Commissions, playmats, collabs, talks, or just a good card game story.</p>
+    <p style="margin:0">
+      <a class="email" id="email" href="#contact" data-u="contact" data-d="chlorophilly.com">contact [at] chlorophilly.com</a>
+      <button class="btn copy" id="copy" type="button" hidden>copy</button>
+    </p>
+
+    <ul class="links" aria-label="Elsewhere">
+      <li><a href="https://x.com/theChlorophilly" rel="me noopener" target="_blank">Art on X <span class="mono">@theChlorophilly ↗</span></a></li>
+      <li><a href="https://www.instagram.com/chlorophilly.verse/" rel="me noopener" target="_blank">Art on Instagram <span class="mono">@chlorophilly.verse ↗</span></a></li>
+      <li><a href="https://x.com/0x_philly" rel="me noopener" target="_blank">Research on X <span class="mono">@0x_philly ↗</span></a></li>
+      <li><a href="https://www.instagram.com/chlorophilly/" rel="me noopener" target="_blank">Photos <span class="mono">@chlorophilly ↗</span></a></li>
+      <li><a href="https://www.facebook.com/AnubisCardsandCraft" rel="noopener" target="_blank">Anubis <span class="mono">Cards &amp; Craft ↗</span></a></li>
+      <li><a href="https://www.linkedin.com/in/watcharawich-jirawongsapan/" rel="me noopener" target="_blank">LinkedIn <span class="mono">Watcharawich ↗</span></a></li>
+      <li><a href="https://www.youtube.com/channel/UCcXRcFSEKiMIAEFPOoBiJKw" rel="me noopener" target="_blank">YouTube <span class="mono">chlorophilly ↗</span></a></li>
+      <li><a href="https://lit.link/en/chlorophilly" rel="me noopener" target="_blank">Everything else <span class="mono">lit.link ↗</span></a></li>
+    </ul>
+  </section>
 </main>
 
 <footer class="wrap mono">
-  <span class="langs">ไทย ◉ English ◉ 日本語</span>
   <span>Make things on purpose, with care. 🐧</span>
   <span>© <span id="yr">2026</span> chlorophilly</span>
 </footer>
+
+<dialog class="lb" id="lb" aria-label="Artwork preview">
+  <button class="btn" type="button" id="lbClose">close ✕</button>
+  <img id="lbImg" alt="">
+  <p class="mono" id="lbCap"></p>
+</dialog>
 
 <script>
   // Bangkok clock
@@ -281,17 +515,34 @@
   tick(); setInterval(tick, 1000);
   document.getElementById('yr').textContent = new Date().getFullYear();
 
+  // Email, assembled here so scrapers reading raw HTML don't get it
+  const em = document.getElementById('email');
+  const addr = em.dataset.u + '@' + em.dataset.d;
+  em.textContent = addr; em.href = 'mailto:' + addr;
+  const cp = document.getElementById('copy');
+  if (navigator.clipboard) {
+    cp.hidden = false;
+    cp.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(addr); cp.textContent = 'copied ✓'; }
+      catch { cp.textContent = 'copy failed'; }
+      setTimeout(() => { cp.textContent = 'copy'; }, 1800);
+    });
+  }
+
   // Monocle lens: an x-ray copy of the hero, revealed through a circle
-  const hero = document.getElementById('hero');
+  const hero = document.getElementById('top');
   const xray = document.createElement('div');
   xray.className = 'xray';
   xray.setAttribute('aria-hidden', 'true');
-  xray.appendChild(document.getElementById('heroInner').cloneNode(true)).removeAttribute('id');
+  const clone = document.getElementById('heroInner').cloneNode(true);
+  clone.removeAttribute('id');
+  clone.querySelectorAll('a').forEach(a => a.setAttribute('tabindex', '-1'));
+  xray.appendChild(clone);
   const ring = document.createElement('div');
   ring.className = 'ring';
   hero.append(xray, ring);
 
-  const R = () => Math.max(70, Math.min(140, hero.clientWidth * 0.1));
+  const R = () => Math.max(64, Math.min(140, hero.clientWidth * 0.1));
   const set = (x, y, r) => {
     for (const el of [xray, ring]) {
       el.style.setProperty('--x', x + 'px');
@@ -299,29 +550,48 @@
       el.style.setProperty('--r', r + 'px');
     }
   };
-
   let idle = true, raf;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const drift = (ts) => {
-    const w = hero.clientWidth, h = hero.clientHeight;
-    const s = ts / 1000;
-    set(w * (0.5 + 0.34 * Math.sin(s * 0.45)), h * (0.5 + 0.18 * Math.sin(s * 0.9)), R());
+    const w = hero.clientWidth, h = hero.clientHeight, s = ts / 1000;
+    set(w * (0.5 + 0.36 * Math.sin(s * 0.42)), h * (0.45 + 0.22 * Math.sin(s * 0.84)), R());
     raf = requestAnimationFrame(drift);
   };
-  const park = () => set(hero.clientWidth * 0.62, hero.clientHeight * 0.48, R());
-
+  const park = () => set(hero.clientWidth * 0.3, hero.clientHeight * 0.35, R());
   if (reduce) park(); else raf = requestAnimationFrame(drift);
-
   hero.addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse') return;
     if (idle) { idle = false; cancelAnimationFrame(raf); }
     const b = hero.getBoundingClientRect();
     set(e.clientX - b.left, e.clientY - b.top, R());
   });
   hero.addEventListener('pointerleave', () => {
+    if (idle) return;
     idle = true;
     if (reduce) park(); else raf = requestAnimationFrame(drift);
   });
   addEventListener('resize', () => { if (reduce) park(); });
+
+  // Lightbox
+  const lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'), lbCap = document.getElementById('lbCap');
+  document.querySelectorAll('.tile').forEach(tile => tile.addEventListener('click', () => {
+    const img = tile.querySelector('img');
+    lbImg.src = img.src; lbImg.alt = img.alt;
+    lbCap.textContent = tile.querySelector('figcaption')?.textContent || '';
+    lb.showModal();
+  }));
+  document.getElementById('lbClose').addEventListener('click', () => lb.close());
+  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+
+  // Reveal on scroll
+  if ('IntersectionObserver' in window && !reduce) {
+    const io = new IntersectionObserver((entries) => entries.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    }), { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+  }
 </script>
 </body>
 </html>
