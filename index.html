@@ -838,14 +838,8 @@
     if (e.key === 'Enter' || e.key === ' ') { touch(); setSplit(50); e.preventDefault(); }
   });
 
-  // Desktop: the balance tilts gently toward the side you're looking at, until you drag it yourself
-  duo.addEventListener('pointermove', (e) => {
-    if (touched || dragging || e.pointerType !== 'mouse' || phone.matches) return;
-    setSplit(fromPointer(e) < 50 ? 56 : 44);
-  });
-  duo.addEventListener('pointerleave', () => { if (!touched && !dragging) setSplit(50); });
-
-  // One gentle sway on load so the handle reads as draggable
+  // One gentle sway on load so the handle reads as draggable (skipped once the visitor reaches for it)
+  handle.addEventListener('pointerenter', touch);
   if (!reduce) {
     setTimeout(() => { if (!touched) setSplit(58); }, 900);
     setTimeout(() => { if (!touched) setSplit(42); }, 1700);
