@@ -51,9 +51,9 @@
     background: var(--cream); color: var(--ink);
   }
   * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-x: hidden; overflow-x: clip; }
   body {
-    margin: 0; overflow-x: hidden;
+    margin: 0; overflow-x: hidden; overflow-x: clip;
     background: var(--bg); color: var(--ink);
     font: 400 17px/1.6 var(--body);
     -webkit-font-smoothing: antialiased;
@@ -72,7 +72,7 @@
 
   /* header: inverts itself over light and dark */
   .bar {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 60;
     display: flex; justify-content: space-between; align-items: center; gap: 16px;
     padding-block: 16px; color: #fff; mix-blend-mode: difference; pointer-events: none;
   }
@@ -113,6 +113,7 @@
 
   /* ================= duo hero ================= */
   .duo {
+    margin-top: calc(-1 * var(--hdr, 68px)); /* header is sticky; the hero slides up underneath it */
     position: relative; height: 100vh; height: 100svh; min-height: 640px; max-height: 1080px;
     overflow: hidden; --split: 50%; transition: --split .8s cubic-bezier(.2,.8,.2,1);
     isolation: isolate;
@@ -418,6 +419,10 @@
     .roles span::before { content: " · "; }
     .art-name { margin-top: 0; font-size: clamp(26px, 7.4vw, 40px); }
     .mk-p { display: none; }
+    /* phones: always a plain solid bar (iOS Safari mis-positions blended/blurred fixed headers while scrolling) */
+    .bar { mix-blend-mode: normal; color: var(--ink); }
+    .bar::before { opacity: 1; background: oklch(0.13 0.008 280); backdrop-filter: none; -webkit-backdrop-filter: none; transition: none; }
+    .bar .hbtn { background: var(--green); color: var(--bg); }
     nav .lg { display: none; }
     nav .sh { display: inline; }
     .hbtn { padding: 7px 12px; }
@@ -753,6 +758,8 @@
   // Header: colour-flip only at the very top, solid bar once scrolled
   const bar = document.querySelector('.bar');
   const onScroll = () => bar.classList.toggle('solid', scrollY > 8);
+  const setHdr = () => document.documentElement.style.setProperty('--hdr', bar.offsetHeight + 'px');
+  setHdr(); addEventListener('resize', setHdr);
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
   // Bangkok clock
