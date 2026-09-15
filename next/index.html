@@ -85,6 +85,10 @@
   nav a b { font-weight: 500; margin-right: 6px; }
   nav a:hover, nav a:focus-visible, nav a.on { opacity: 1; outline: none; }
   nav a.on { text-decoration: underline; text-underline-offset: 6px; }
+  .hright { display: flex; align-items: center; gap: clamp(12px, 2vw, 22px); }
+  .hbtn { background: #fff; color: #000; text-decoration: none; padding: 8px 16px; border-radius: 99px; font-weight: 500; white-space: nowrap; transition: transform .2s; }
+  .hbtn:hover, .hbtn:focus-visible { transform: translateY(-1px); outline: 2px solid #fff; outline-offset: 2px; }
+  nav .sh { display: none; }
   .clock { opacity: .7; }
   .clock b { font-weight: 500; }
 
@@ -105,6 +109,8 @@
     isolation: isolate;
   }
   .duo.dragging { transition: none; }
+  .duo.dragging, .duo.dragging * { user-select: none; -webkit-user-select: none; }
+  .handle, .readout, .drag-hint { user-select: none; -webkit-user-select: none; }
   .side { position: absolute; inset: 0; }
   .side.pro {
     background-color: var(--cream);
@@ -124,8 +130,21 @@
   .side-tag { margin: 0 0 clamp(14px, 2.4vh, 28px); display: inline-flex; gap: 10px; align-items: center; color: var(--muted); }
   .side-tag b { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 1px solid currentColor; font-weight: 500; font-size: 12px; }
 
-  .arch { margin: 0; height: min(34vh, 330px); aspect-ratio: 4 / 5; border-radius: 999px 999px 10px 10px; overflow: hidden; box-shadow: 0 30px 60px oklch(0.16 0.01 280 / .18); }
-  .arch img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(.2) contrast(1.04); }
+  .arch { position: relative; margin: 0; height: min(34vh, 330px); aspect-ratio: 4 / 5; }
+  .arch-img {
+    position: absolute; inset: 10%; overflow: hidden; border-radius: 999px 999px 8px 8px;
+    box-shadow: 0 0 0 6px var(--cream), 0 0 0 7.5px var(--ink), 0 30px 60px oklch(0.16 0.01 280 / .22);
+  }
+  .arch-img img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(.2) contrast(1.04); }
+  .arch-img::after { /* slow scan line, like a plan being drawn */
+    content: ""; position: absolute; left: 0; right: 0; height: 30%; top: -30%;
+    background: linear-gradient(transparent, oklch(0.48 0.13 150 / .16), transparent);
+    animation: scan 6s ease-in-out infinite;
+  }
+  @keyframes scan { 0% { top: -30%; } 60%, 100% { top: 110%; } }
+  .arch svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .arch text { fill: var(--muted); font: 500 10.5px var(--mono); text-transform: uppercase; }
+  .arch .ticks { stroke: var(--green-deep); stroke-width: 1.2; }
   .pro-name {
     margin: clamp(18px, 3vh, 32px) 0 0; font-family: var(--display); font-stretch: 100%; font-weight: 800;
     font-size: clamp(30px, 3.4vw, 54px); line-height: .98; letter-spacing: -0.035em;
@@ -165,26 +184,28 @@
   .collage img:nth-child(6) { right: 4%; bottom: 0; width: 28%; transform: rotate(-12deg); }
 
   /* divider */
-  .divider { position: absolute; top: 0; bottom: 0; left: var(--split); width: 0; z-index: 5; }
+  .divider { position: absolute; top: 0; bottom: 0; left: var(--split); width: 0; z-index: 5; pointer-events: none; }
   .divider::before { content: ""; position: absolute; top: 0; bottom: 0; left: -1px; width: 2px; background: var(--green); box-shadow: 0 0 18px oklch(0.70 0.18 145 / .6); }
   .handle {
-    position: absolute; left: 0; top: 50%; width: 66px; height: 66px; transform: translate(-50%, -50%);
+    position: absolute; z-index: 6; left: clamp(40px, var(--split), calc(100% - 40px)); top: 50%;
+    width: 66px; height: 66px; transform: translate(-50%, -50%);
     border-radius: 50%; border: 7px solid var(--green); cursor: ew-resize; touch-action: none;
     background: linear-gradient(90deg, var(--cream) 50%, var(--bg) 50%);
     box-shadow: 0 0 0 1px oklch(0 0 0 / .15), 0 0 30px oklch(0.70 0.18 145 / .45), 0 10px 30px oklch(0 0 0 / .35);
     display: grid; place-items: center; outline: none;
-    transition: transform .25s cubic-bezier(.3,1.5,.5,1);
+    transition: scale .25s cubic-bezier(.3,1.5,.5,1);
   }
-  .handle:hover, .handle:focus-visible, .dragging .handle { transform: translate(-50%, -50%) scale(1.1); }
+  .handle:hover, .handle:focus-visible, .dragging .handle { scale: 1.1; }
   .handle:focus-visible { box-shadow: 0 0 0 4px var(--green-hi), 0 0 30px oklch(0.70 0.18 145 / .6); }
   .handle svg { width: 30px; height: 30px; }
   .readout {
-    position: absolute; left: 0; top: calc(50% + 50px); transform: translateX(-50%); white-space: nowrap;
+    position: absolute; z-index: 6; left: clamp(72px, var(--split), calc(100% - 72px)); top: calc(50% + 50px);
+    transform: translateX(-50%); white-space: nowrap;
     padding: 4px 10px; border-radius: 99px; background: oklch(0.13 0.008 280 / .8); color: var(--ink); font-size: 12px;
     backdrop-filter: blur(6px); pointer-events: none;
   }
   .readout em { font-style: normal; color: var(--green-hi); }
-  .drag-hint { position: absolute; left: 0; top: calc(50% - 64px); transform: translateX(-50%); white-space: nowrap; color: var(--green); font-size: 12px; pointer-events: none; transition: opacity .6s; }
+  .drag-hint { position: absolute; z-index: 6; left: clamp(84px, var(--split), calc(100% - 84px)); top: calc(50% - 64px); transform: translateX(-50%); white-space: nowrap; color: var(--green); font-size: 12px; pointer-events: none; transition: opacity .6s; }
   .duo.touched .drag-hint { opacity: 0; }
 
   /* ================= chapters ================= */
@@ -249,7 +270,9 @@
   @keyframes slide { to { transform: translateX(-50%); } }
 
   /* artist */
-  .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-flow: dense; gap: clamp(8px, 1vw, 14px); }
+  .gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(8px, 1vw, 14px); max-width: 1000px; }
+  .gal-hint { color: var(--muted); margin: 0 0 14px; }
+  .gal-hint::before { content: "⤢ "; color: var(--green); }
   .tile { position: relative; overflow: hidden; border-radius: 6px; background: var(--bg-2); aspect-ratio: 1; padding: 0; border: 0; cursor: zoom-in; color: inherit; display: block; width: 100%; }
   .tile.big { grid-column: span 2; grid-row: span 2; }
   .tile img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
@@ -257,10 +280,13 @@
   .tile::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 0 var(--green); transition: box-shadow .25s; }
   .tile:hover::after, .tile:focus-visible::after { box-shadow: inset 0 0 0 3px var(--green); }
   .tile:focus-visible { outline: none; }
+  .zi { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: oklch(0.13 0.008 280 / .72); color: var(--ink); font-size: 15px; opacity: 0; transform: scale(.8); transition: .25s; pointer-events: none; }
+  .tile:hover .zi, .tile:focus-visible .zi { opacity: 1; transform: none; }
+  @media (hover: none) { .zi { opacity: .9; transform: none; width: 26px; height: 26px; font-size: 13px; } }
   .tile figcaption { position: absolute; left: 10px; bottom: 10px; padding: 4px 10px; border-radius: 99px; background: oklch(0.13 0.008 280 / .75); backdrop-filter: blur(6px); font: 12px var(--mono); color: var(--ink); opacity: 0; transform: translateY(6px); transition: .3s; }
   .tile:hover figcaption, .tile:focus-visible figcaption { opacity: 1; transform: none; }
   @media (hover: none) { .tile figcaption { opacity: 1; transform: none; } }
-  .feature { margin: clamp(56px, 10vh, 110px) auto 0; max-width: 1120px; }
+  .feature { margin: clamp(8px, 1vw, 14px) 0 0; max-width: 1000px; }
   .feature .tile { aspect-ratio: 1000 / 656; border-radius: 4px; box-shadow: 0 40px 120px oklch(0 0 0 / .7), 0 0 0 1px var(--line); }
   .feature .tile:hover img, .feature .tile:focus-visible img { transform: scale(1.02); }
   .feature-cap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; margin: 18px 0 0; color: var(--muted); }
@@ -316,10 +342,23 @@
   .links a:hover, .links a:focus-visible { padding-left: 12px; color: var(--green-hi); outline: none; }
   footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-block: 28px 36px; color: var(--muted); border-top: 1px solid var(--line); }
 
-  dialog.lb { padding: 0; border: 0; background: transparent; max-width: 92vw; max-height: 92vh; }
-  dialog.lb::backdrop { background: oklch(0.08 0.01 280 / .92); backdrop-filter: blur(6px); }
-  dialog.lb img { max-width: 92vw; max-height: 86vh; width: auto; border-radius: 6px; }
-  dialog.lb button { position: fixed; top: 16px; right: 16px; color: var(--ink); }
+  dialog.lb { padding: 0; border: 0; margin: 0; width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none; background: transparent; color: var(--ink); overflow: hidden; }
+  dialog.lb[open] { display: flex; flex-direction: column; }
+  dialog.lb::backdrop { background: oklch(0.08 0.01 280 / .95); backdrop-filter: blur(8px); }
+  .lb-stage { flex: 1; min-height: 0; position: relative; overflow: hidden; display: grid; place-items: center; touch-action: none; user-select: none; }
+  .lb-stage img {
+    max-width: calc(100vw - 32px); max-height: calc(100dvh - 130px); width: auto; height: auto; border-radius: 4px;
+    transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(var(--s, 1)); transition: transform .28s cubic-bezier(.2,.8,.2,1);
+    cursor: zoom-in; -webkit-user-drag: none; will-change: transform;
+  }
+  .lb-stage img.zoomed { cursor: grab; }
+  .lb-stage.live img { transition: none; }
+  .lb-stage.live img.zoomed { cursor: grabbing; }
+  .lb-bar { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; padding: 10px 16px 4px; }
+  .lbb { background: oklch(0.96 0.02 90 / .08); border: 1px solid var(--line); color: var(--ink); border-radius: 99px; padding: 8px 14px; font: 13px var(--mono); cursor: pointer; }
+  .lbb:hover, .lbb:focus-visible { border-color: var(--green); color: var(--green-hi); outline: none; }
+  #lbCount { min-width: 4.5em; text-align: center; color: var(--muted); }
+  .lb-tip { text-align: center; color: var(--faint); margin: 0; padding: 4px 16px calc(12px + env(safe-area-inset-bottom)); font-size: 12px; }
 
   .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); }
   .js .reveal.in { opacity: 1; transform: none; }
@@ -332,7 +371,7 @@
     nav .opt { display: none; }
     .about { grid-template-columns: 1fr; }
     .portrait { max-width: 360px; }
-    .gallery, .photos { grid-template-columns: repeat(2, 1fr); }
+    .photos { grid-template-columns: repeat(2, 1fr); }
     .numbers { grid-template-columns: repeat(2, 1fr); }
     .numbers li:nth-child(2) { border-right: 0; }
     .numbers li:nth-child(3) { padding-left: 0; }
@@ -362,6 +401,9 @@
     .roles span::before { content: " · "; }
     .art-name { margin-top: 0; font-size: clamp(26px, 7.4vw, 40px); }
     .mk-p { display: none; }
+    nav .lg { display: none; }
+    nav .sh { display: inline; }
+    .hbtn { padding: 7px 12px; }
     .mark { white-space: nowrap; }
     .art-roles { margin-top: 8px; font-size: 12px; }
     .half .btn { margin-top: 10px; padding: 8px 14px; font-size: 13px; }
@@ -373,10 +415,10 @@
     .extra-note { margin-bottom: 10px; }
     .divider { top: var(--split); bottom: auto; left: 0; right: 0; width: auto; height: 0; }
     .divider::before { top: -1px; bottom: auto; left: 0; right: 0; width: auto; height: 2px; }
-    .handle { left: 50%; top: 0; width: 56px; height: 56px; border-width: 6px; cursor: ns-resize; background: linear-gradient(180deg, var(--cream) 50%, var(--bg) 50%); }
+    .handle { left: 50%; top: clamp(92px, var(--split), calc(100% - 40px)); width: 56px; height: 56px; border-width: 6px; cursor: ns-resize; background: linear-gradient(180deg, var(--cream) 50%, var(--bg) 50%); }
     .handle svg { transform: rotate(90deg); width: 24px; height: 24px; }
-    .readout { left: auto; right: 16px; top: 0; transform: translateY(-50%); }
-    .drag-hint { left: 16px; top: 0; transform: translateY(-50%); padding: 3px 8px; border-radius: 99px; background: oklch(0.13 0.008 280 / .8); }
+    .readout { left: auto; right: 16px; top: clamp(92px, var(--split), calc(100% - 40px)); transform: translateY(-50%); }
+    .drag-hint { left: 16px; top: clamp(92px, var(--split), calc(100% - 40px)); transform: translateY(-50%); padding: 3px 8px; border-radius: 99px; background: oklch(0.13 0.008 280 / .8); }
 
     .chapter { padding-block: 64px 56px; }
     .chap-head { grid-template-columns: 1fr; gap: 8px; margin-bottom: 36px; }
@@ -386,7 +428,10 @@
     .facts li { grid-template-columns: 1fr; gap: 4px; }
     .ggg { margin-top: 64px; padding-top: 48px; }
     .ggg-strip { margin-top: 24px; padding-bottom: 36px; }
-    .feature { margin-top: 40px; }
+    .feature { margin-top: 10px; }
+    .gallery { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); scrollbar-width: none; }
+    .gallery::-webkit-scrollbar { display: none; }
+    .gallery .tile { flex: 0 0 44vw; scroll-snap-align: start; }
     .contact { padding-block: 56px 40px; }
     .clock .loc { display: none; }
     .js .reveal { opacity: 1; transform: none; transition: none; }
@@ -409,11 +454,13 @@
     <span><span class="mk-p">philly ◉ </span>chlorophilly</span>
   </a>
   <nav class="mono" aria-label="Sections">
-    <a href="#pro" data-spy="pro"><b>A</b>professional</a>
-    <a href="#art" data-spy="art"><b>B</b>artist</a>
-    <a class="opt" href="#contact" data-spy="contact">contact</a>
+    <a href="#pro" data-spy="pro"><b>A</b><span class="lg">professional</span><span class="sh">pro</span></a>
+    <a href="#art" data-spy="art"><b>B</b><span class="lg">artist</span><span class="sh">art</span></a>
   </nav>
-  <span class="mono clock"><span class="loc">Bangkok ◉ </span>BKK <b id="time">--:--</b></span>
+  <div class="hright">
+    <span class="mono clock"><span class="loc">Bangkok ◉ </span>BKK <b id="time">--:--</b></span>
+    <a class="hbtn mono" href="#contact" data-spy="contact">Contact me</a>
+  </div>
 </header>
 
 <h1 class="sr">Watcharawich (Philly) Jirawongsapan, also known as chlorophilly</h1>
@@ -423,7 +470,14 @@
   <div class="side pro light">
     <div class="half main">
       <p class="side-tag mono"><b>A</b>The professional side</p>
-      <figure class="arch"><img src="../img/philly.jpg" width="737" height="737" alt="Portrait of Philly in a black turtleneck and blazer against a concrete wall"></figure>
+      <figure class="arch">
+        <svg viewBox="0 0 240 300" aria-hidden="true">
+          <defs><path id="archPath" d="M12 282 L12 126 A108 108 0 0 1 228 126 L228 282 Z"/></defs>
+          <text id="archText"><textPath href="#archPath" id="archTP"></textPath></text>
+          <path class="ticks" d="M4 30v10M4 260v10M236 30v10M236 260v10M24 296h10M206 296h10" fill="none"/>
+        </svg>
+        <div class="arch-img"><img src="../img/philly.jpg" width="737" height="737" alt="Portrait of Philly in a black turtleneck and blazer against a concrete wall"></div>
+      </figure>
       <div class="ptxt">
         <p class="pro-name">Watcharawich<br>Jirawongsapan</p>
         <ul class="roles">
@@ -470,13 +524,12 @@
     </div>
   </div>
 
-  <div class="divider">
-    <span class="drag-hint mono" aria-hidden="true">drag to rebalance</span>
-    <div class="handle" id="handle" role="slider" tabindex="0" aria-label="Balance between the professional side and the artist side" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50 percent professional, 50 percent artist">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6 3 12l6 6" fill="none" stroke="var(--green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="m15 6 6 6-6 6" fill="none" stroke="var(--green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <span class="readout mono" aria-hidden="true">pro <em id="rPro">50</em> ◉ <em id="rArt">50</em> art</span>
+  <div class="divider" aria-hidden="true"></div>
+  <span class="drag-hint mono" aria-hidden="true">drag to rebalance</span>
+  <div class="handle" id="handle" role="slider" tabindex="0" aria-label="Balance between the professional side and the artist side" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50 percent professional, 50 percent artist">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6 3 12l6 6" fill="none" stroke="var(--green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="m15 6 6 6-6 6" fill="none" stroke="var(--green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
+  <span class="readout mono" aria-hidden="true">pro <em id="rPro">50</em> ◉ <em id="rArt">50</em> art</span>
 </section>
 
 <main>
@@ -562,21 +615,24 @@
         </div>
       </div>
 
-      <div class="gallery reveal">
-        <button class="tile big" type="button"><img src="../img/art-02.jpg" loading="lazy" alt="Illustration of a young man in a black hoodie wrapped in green lightning"></button>
-        <button class="tile big" type="button"><img src="../img/art-03.jpg" loading="lazy" alt="Horned sorceress casting green slashes against a purple sky"></button>
-        <button class="tile" type="button"><img src="../img/art-05.jpg" loading="lazy" alt="White-haired swordsman with green glasses on a red background"></button>
-        <button class="tile" type="button"><img src="../img/art-08.jpg" loading="lazy" alt="Masked figure under a black umbrella on teal"></button>
-        <button class="tile" type="button"><img src="../img/art-09.jpg" loading="lazy" alt="Woman in a kimono holding a skewer, red background"></button>
-        <button class="tile" type="button"><img src="../img/art-04.jpg" loading="lazy" alt="Grayscale character whose head opens to reveal an Ethereum logo, red background"></button>
-        <button class="tile big" type="button"><img src="../img/art-13.jpg" loading="lazy" alt="Tiny figure at the end of a vast glowing tunnel"></button>
-        <button class="tile big" type="button"><img src="../img/art-01.jpg" loading="lazy" alt="Armored heroine with green visor over a dark teal background"></button>
-      </div>
+      <div data-group="art">
+        <p class="gal-hint mono">tap any piece to open ◉ zoom in ◉ swipe through</p>
+        <div class="gallery reveal">
+          <button class="tile" type="button"><img src="../img/art-02.jpg" loading="lazy" alt="Illustration of a young man in a black hoodie wrapped in green lightning"></button>
+          <button class="tile" type="button"><img src="../img/art-03.jpg" loading="lazy" alt="Horned sorceress casting green slashes against a purple sky"></button>
+          <button class="tile" type="button"><img src="../img/art-13.jpg" loading="lazy" alt="Tiny figure at the end of a vast glowing tunnel"></button>
+          <button class="tile" type="button"><img src="../img/art-01.jpg" loading="lazy" alt="Armored heroine with green visor over a dark teal background"></button>
+          <button class="tile" type="button"><img src="../img/art-05.jpg" loading="lazy" alt="White-haired swordsman with green glasses on a red background"></button>
+          <button class="tile" type="button"><img src="../img/art-08.jpg" loading="lazy" alt="Masked figure under a black umbrella on teal"></button>
+          <button class="tile" type="button"><img src="../img/art-09.jpg" loading="lazy" alt="Woman in a kimono holding a skewer, red background"></button>
+          <button class="tile" type="button"><img src="../img/art-04.jpg" loading="lazy" alt="Grayscale character whose head opens to reveal an Ethereum logo, red background"></button>
+        </div>
 
-      <figure class="feature reveal">
-        <button class="tile" type="button"><img src="../img/art-12.jpg" loading="lazy" width="1000" height="656" alt="Three silhouetted riders leaping under three white moons above a grayscale battle, eyes glowing green"></button>
-        <p class="feature-cap mono"><span>featured</span><span>Grayscale world ◉ one green light</span></p>
-      </figure>
+        <figure class="feature reveal">
+          <button class="tile" type="button"><img src="../img/art-12.jpg" loading="lazy" width="1000" height="656" alt="Three silhouetted riders leaping under three white moons above a grayscale battle, eyes glowing green"></button>
+          <p class="feature-cap mono"><span>featured</span><span>Grayscale world ◉ one green light</span></p>
+        </figure>
+      </div>
 
       <div class="art-notes reveal">
         <img src="../img/process.jpg" loading="lazy" alt="Philly drawing on an iPad">
@@ -614,7 +670,7 @@
           <p class="lede">I shoot places. Edges, frames, and the way people fill a space, or leave it empty. Yes, a lot of stadiums.</p>
         </div>
       </div>
-      <div class="photos reveal">
+      <div class="photos reveal" data-group="photos">
         <button class="tile" type="button"><img src="../img/photo-stadium.jpg" loading="lazy" alt="Empty stadium stands and a green pitch under a blue sky, Japan"><figcaption>Off day, Japan</figcaption></button>
         <button class="tile" type="button"><img src="../img/photo-lake.jpg" loading="lazy" alt="Philly sitting on a wooden pier over a still mountain lake"><figcaption>Somewhere quiet, Austria</figcaption></button>
         <button class="tile" type="button"><img src="../img/photo-matchday.jpg" loading="lazy" alt="Supporters in blue waving flags outside a stadium on matchday"><figcaption>Matchday, Japan</figcaption></button>
@@ -662,9 +718,16 @@
   <span>© <span id="yr">2026</span> Watcharawich Jirawongsapan</span>
 </footer>
 
-<dialog class="lb" id="lb" aria-label="Artwork preview">
-  <button class="btn" type="button" id="lbClose">close ✕</button>
-  <img id="lbImg" alt="">
+<dialog class="lb" id="lb" aria-label="Image viewer">
+  <div class="lb-stage" id="lbStage"><img id="lbImg" alt="" draggable="false"></div>
+  <div class="lb-bar">
+    <button class="lbb" type="button" id="lbPrev" aria-label="Previous image">←</button>
+    <span class="mono" id="lbCount">1 / 1</span>
+    <button class="lbb" type="button" id="lbNext" aria-label="Next image">→</button>
+    <button class="lbb" type="button" id="lbZoom">zoom +</button>
+    <button class="lbb" type="button" id="lbClose">close ✕</button>
+  </div>
+  <p class="lb-tip mono">tap or scroll to zoom ◉ drag to look around ◉ pinch on phones ◉ swipe for next</p>
 </dialog>
 
 <script>
@@ -699,7 +762,7 @@
   let split = 50, dragging = false, touched = false;
 
   function setSplit(v) {
-    split = Math.max(6, Math.min(94, v));
+    split = Math.max(0, Math.min(100, v));
     duo.style.setProperty('--split', split + '%');
     const p = Math.round(split), a = 100 - p;
     rPro.textContent = p; rArt.textContent = a;
@@ -714,10 +777,15 @@
 
   handle.addEventListener('pointerdown', (e) => {
     dragging = true; touch(); handle.setPointerCapture(e.pointerId);
+    window.getSelection()?.removeAllRanges();
     duo.classList.add('dragging'); e.preventDefault();
   });
   handle.addEventListener('pointermove', (e) => { if (dragging) setSplit(fromPointer(e)); });
-  const end = () => { dragging = false; duo.classList.remove('dragging'); };
+  const end = () => {
+    if (!dragging) return;
+    dragging = false; duo.classList.remove('dragging');
+    if (split < 4) setSplit(0); else if (split > 96) setSplit(100);
+  };
   handle.addEventListener('pointerup', end);
   handle.addEventListener('pointercancel', end);
   handle.addEventListener('dblclick', () => { touch(); setSplit(50); });
@@ -725,8 +793,8 @@
     const step = e.shiftKey ? 10 : 4;
     const map = { ArrowLeft: -step, ArrowUp: -step, ArrowRight: step, ArrowDown: step };
     if (e.key in map) { touch(); setSplit(split + map[e.key]); e.preventDefault(); }
-    if (e.key === 'Home') { touch(); setSplit(6); e.preventDefault(); }
-    if (e.key === 'End') { touch(); setSplit(94); e.preventDefault(); }
+    if (e.key === 'Home') { touch(); setSplit(0); e.preventDefault(); }
+    if (e.key === 'End') { touch(); setSplit(100); e.preventDefault(); }
     if (e.key === 'Enter' || e.key === ' ') { touch(); setSplit(50); e.preventDefault(); }
   });
 
@@ -751,15 +819,127 @@
   }), { rootMargin: '-45% 0px -50% 0px' });
   ['pro', 'art', 'contact'].forEach(id => spyIO.observe(document.getElementById(id)));
 
-  // Lightbox
-  const lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg');
-  document.querySelectorAll('.tile').forEach(tile => tile.addEventListener('click', () => {
-    const img = tile.querySelector('img');
-    lbImg.src = img.src; lbImg.alt = img.alt;
-    lb.showModal();
-  }));
+  // Marching text around the professional arch (the counterpart of the artist ring)
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
+    const path = document.getElementById('archPath'), tp = document.getElementById('archTP'), txt = document.getElementById('archText');
+    const unit = 'Watcharawich Jirawongsapan ◉ D.Eng UTokyo ◉ AI Red Teamer ◉ Co-founder ◉ Bangkok ◉ ';
+    const L = path.getTotalLength();
+    tp.textContent = unit;
+    const natural = txt.getComputedTextLength();
+    const chars = [...unit].length;
+    // stretch letter spacing so one unit is exactly the loop length, then repeat for seamless wrap
+    txt.style.letterSpacing = Math.max(0, (L - natural) / chars) + 'px';
+    tp.textContent = unit.repeat(3);
+    let phase = 0, last = performance.now();
+    const step = (now) => {
+      phase = (phase + (now - last) * 0.012) % L; last = now;
+      tp.setAttribute('startOffset', -phase);
+      requestAnimationFrame(step);
+    };
+    if (!reduce) requestAnimationFrame(step);
+  });
+
+  // Zoomable image viewer
+  const lb = document.getElementById('lb'), stage = document.getElementById('lbStage'), vImg = document.getElementById('lbImg');
+  const lbCount = document.getElementById('lbCount'), lbPrev = document.getElementById('lbPrev'), lbNext = document.getElementById('lbNext'), lbZoom = document.getElementById('lbZoom');
+  let group = [], idx = 0, s = 1, tx = 0, ty = 0;
+  const ptrs = new Map(); let start = null, pinch = null, moved = false;
+
+  const applyT = (live) => {
+    stage.classList.toggle('live', !!live);
+    vImg.style.setProperty('--s', s); vImg.style.setProperty('--tx', tx + 'px'); vImg.style.setProperty('--ty', ty + 'px');
+    vImg.classList.toggle('zoomed', s > 1.01);
+    lbZoom.textContent = s > 1.01 ? 'zoom −' : 'zoom +';
+  };
+  const clampT = () => {
+    const mx = (s - 1) * vImg.offsetWidth / 2, my = (s - 1) * vImg.offsetHeight / 2;
+    tx = Math.max(-mx, Math.min(mx, tx)); ty = Math.max(-my, Math.min(my, ty));
+  };
+  const center = () => { const r = stage.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
+  const zoomAt = (ns, px, py) => {
+    ns = Math.max(1, Math.min(5, ns));
+    tx = px - (px - tx) * ns / s; ty = py - (py - ty) * ns / s; s = ns;
+    if (s < 1.02) { s = 1; tx = 0; ty = 0; }
+    clampT();
+  };
+  const resetZ = () => { s = 1; tx = 0; ty = 0; applyT(); };
+  const show = () => {
+    const im = group[idx].querySelector('img');
+    vImg.src = im.currentSrc || im.src; vImg.alt = im.alt;
+    lbCount.textContent = `${idx + 1} / ${group.length}`;
+    lbPrev.hidden = lbNext.hidden = group.length < 2;
+    resetZ();
+  };
+  const go = (d) => { if (group.length > 1) { idx = (idx + d + group.length) % group.length; show(); } };
+
+  document.querySelectorAll('.tile').forEach(tile => {
+    tile.insertAdjacentHTML('beforeend', '<span class="zi" aria-hidden="true">⤢</span>');
+    tile.setAttribute('aria-label', 'Open larger: ' + (tile.querySelector('img').alt || 'image'));
+    tile.addEventListener('click', () => {
+      const g = tile.closest('[data-group]');
+      group = g ? [...g.querySelectorAll('.tile')] : [tile];
+      idx = group.indexOf(tile); show(); lb.showModal();
+    });
+  });
   document.getElementById('lbClose').addEventListener('click', () => lb.close());
-  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+  lbPrev.addEventListener('click', () => go(-1));
+  lbNext.addEventListener('click', () => go(1));
+  lbZoom.addEventListener('click', () => { if (s > 1.01) resetZ(); else { zoomAt(2.5, 0, 0); applyT(); } });
+
+  stage.addEventListener('pointerdown', (e) => {
+    stage.setPointerCapture(e.pointerId);
+    ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (ptrs.size === 1) { start = { x: e.clientX, y: e.clientY, tx, ty, onImg: e.target === vImg }; moved = false; }
+    if (ptrs.size === 2) {
+      const [a, b] = [...ptrs.values()];
+      pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), s }; moved = true;
+    }
+  });
+  stage.addEventListener('pointermove', (e) => {
+    if (!ptrs.has(e.pointerId)) return;
+    ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (ptrs.size === 2 && pinch) {
+      const [a, b] = [...ptrs.values()], [cx, cy] = center();
+      zoomAt(pinch.s * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d, (a.x + b.x) / 2 - cx, (a.y + b.y) / 2 - cy);
+      applyT(true);
+    } else if (ptrs.size === 1 && start) {
+      const dx = e.clientX - start.x, dy = e.clientY - start.y;
+      if (Math.abs(dx) + Math.abs(dy) > 6) moved = true;
+      if (s > 1.01) { tx = start.tx + dx; ty = start.ty + dy; clampT(); applyT(true); }
+    }
+  });
+  const up = (e) => {
+    if (!ptrs.has(e.pointerId)) return;
+    ptrs.delete(e.pointerId);
+    if (ptrs.size < 2) pinch = null;
+    if (ptrs.size === 0 && start) {
+      const dx = e.clientX - start.x, dy = e.clientY - start.y;
+      if (!moved) {
+        if (start.onImg) {
+          if (s > 1.01) resetZ(); else { const [cx, cy] = center(); zoomAt(2.5, e.clientX - cx, e.clientY - cy); applyT(); }
+        } else if (s <= 1.01) lb.close();
+      } else if (s <= 1.01 && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+        go(dx < 0 ? 1 : -1);
+      } else applyT();
+      start = null;
+    }
+  };
+  stage.addEventListener('pointerup', up);
+  stage.addEventListener('pointercancel', up);
+  stage.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const [cx, cy] = center();
+    zoomAt(s * Math.exp(-e.deltaY * 0.0022), e.clientX - cx, e.clientY - cy);
+    applyT(true);
+  }, { passive: false });
+  lb.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') go(1);
+    else if (e.key === 'ArrowLeft') go(-1);
+    else if (e.key === '+' || e.key === '=') { zoomAt(s * 1.5, 0, 0); applyT(); }
+    else if (e.key === '-') { zoomAt(s / 1.5, 0, 0); applyT(); }
+    else if (e.key === '0') resetZ();
+  });
+  lb.addEventListener('close', resetZ);
 
   // Reveal on scroll (desktop only, starts before things enter view)
   if ('IntersectionObserver' in window && !reduce) {
