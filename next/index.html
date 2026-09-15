@@ -244,7 +244,8 @@
   .light .sub-head h3 { font-stretch: 100%; }
 
   /* professional */
-  .about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
+  .about { max-width: 980px; }
+  .langs { color: var(--muted); margin: 0 0 18px; }
   .portrait { position: relative; margin: 0; }
   .portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 999px 999px 8px 8px; filter: grayscale(.2); }
   .portrait figcaption { margin-top: 14px; color: var(--muted); }
@@ -566,11 +567,8 @@
       </div>
 
       <div class="about">
-        <figure class="portrait reveal">
-          <img src="../img/philly.jpg" loading="lazy" width="737" height="737" alt="Portrait of Philly in a black turtleneck and blazer against a concrete wall">
-          <figcaption class="mono">Watcharawich Jirawongsapan ◉ ไทย ◉ English ◉ 日本語</figcaption>
-        </figure>
         <div class="reveal">
+          <p class="mono langs">Watcharawich Jirawongsapan ◉ ไทย ◉ English ◉ 日本語</p>
           <ul class="facts" style="margin-top:0">
             <li><span class="mono">ai</span><div><h4>AI Red Teamer</h4><p>I red team AI systems as a Japanese language specialist. Finding where models fail, so they fail less. Before that, two years of blockchain research.</p></div></li>
             <li><span class="mono">research</span><div><h4>Doctor of Engineering</h4><p>Surveyed all 70 pro baseball and football home stadiums in Japan and built a typology of how they become community space beyond game day. The University of Tokyo, MEXT scholar, 2024. Before that, an M.Arch at Chulalongkorn measuring 261 buildings in color.</p></div></li>
