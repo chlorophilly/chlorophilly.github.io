@@ -327,6 +327,8 @@
   .tile:hover figcaption, .tile:focus-visible figcaption { opacity: 1; transform: none; }
   @media (hover: none) { .tile figcaption { opacity: 1; transform: none; } }
   .feature { margin: clamp(8px, 1vw, 14px) 0 0; max-width: 1000px; }
+  .feature.latest { margin: 0 0 clamp(28px, 5vh, 52px); }
+  .feature.latest .tile { aspect-ratio: 1800 / 1182; }
   .feature .tile { aspect-ratio: 1000 / 656; border-radius: 4px; box-shadow: 0 40px 120px oklch(0 0 0 / .7), 0 0 0 1px var(--line); }
   .feature .tile:hover img, .feature .tile:focus-visible img { transform: scale(1.02); }
   .feature-cap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; margin: 18px 0 0; color: var(--muted); }
@@ -832,6 +834,10 @@
       </div>
 
       <div data-group="art">
+        <figure class="feature latest reveal">
+          <button class="tile" type="button"><img src="img/art-15.jpg" loading="lazy" width="1800" height="1182" alt="A blonde heroine in a red fur-collared jacket holds a glowing green cube, green energy streaming from the weapon in her other hand under a full moon"></button>
+          <p class="feature-cap mono"><span>latest</span><span>New piece ◉ 2026</span></p>
+        </figure>
         <p class="gal-hint mono">tap any piece to open ◉ zoom in ◉ swipe through</p>
         <div class="gallery reveal">
           <button class="tile" type="button"><img src="img/art-02.jpg" loading="lazy" alt="Illustration of a young man in a black hoodie wrapped in green lightning"></button>
