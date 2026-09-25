@@ -498,6 +498,138 @@
     .js .reveal { opacity: 1; transform: none; transition: none; }
     .tile img, .links a, .email, .handle { transition: none; }
   }
+
+  /* =====================================================================
+     MOTION LAYER (2026-09-25). Everything below is decorative and turns
+     off completely under prefers-reduced-motion.
+     ===================================================================== */
+  .numbers b, .stats b { font-variant-numeric: tabular-nums; }
+  .con-body { padding: 16px 18px 20px; white-space: pre-wrap; }
+  .cl { width: fit-content; max-width: 100%; }
+  .pro-name .ln { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
+  .pro-name .ln > span { display: block; }
+  .art-name .chars { display: inline-block; white-space: nowrap; }
+  .art-name .ch { display: inline-block; }
+
+  /* header scroll progress */
+  .bar .progress { position: absolute; left: 50%; bottom: 0; width: 100vw; margin-left: -50vw; height: 2px; background: var(--green);
+    transform-origin: 0 50%; transform: scaleX(var(--p, 0)); opacity: 0; transition: opacity .3s; pointer-events: none; box-shadow: 0 0 10px oklch(0.70 0.18 145 / .6); }
+  .bar.solid .progress { opacity: 1; }
+
+  /* monocle cursor ring (desktop only, native cursor stays) */
+  .cur { display: none; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* ---------- hero intro: the monocle opens ---------- */
+    @keyframes m-fadeup { from { opacity: 0; transform: translateY(16px); } }
+    @keyframes m-fade { from { opacity: 0; } }
+    @keyframes m-line { from { transform: scaleY(0); } }
+    @keyframes m-line-x { from { transform: scaleX(0); } }
+    @keyframes m-pop { from { scale: 0; opacity: 0; } }
+    @keyframes m-iris { from { clip-path: circle(0% at 50% 55%); } to { clip-path: circle(75% at 50% 55%); } }
+    @keyframes m-ring { from { opacity: 0; transform: scale(.55) rotate(-28deg); } }
+    @keyframes m-rise { from { transform: translateY(105%); } }
+    @keyframes m-char { from { opacity: 0; transform: translateY(55%) rotate(10deg); } }
+    .js .intro .divider::before { animation: m-line 1s cubic-bezier(.7,0,.2,1) .05s backwards; }
+    .js .intro .handle { animation: m-pop .75s cubic-bezier(.3,1.6,.5,1) .75s backwards; }
+    .js .intro .readout, .js .intro .drag-hint { animation: m-fade .6s ease 1.25s backwards; }
+    .js .intro .side-tag { animation: m-fadeup .7s cubic-bezier(.2,.8,.2,1) .2s backwards; }
+    .js .intro .arch-img { animation: m-iris 1.1s cubic-bezier(.6,0,.2,1) .25s backwards; }
+    .js .intro .arch svg { animation: m-fade .8s ease .9s backwards; }
+    .js .intro .ring-art img { animation: m-ring 1s cubic-bezier(.2,.9,.2,1.1) .3s backwards; }
+    .js .intro .ring-art svg { animation: m-fade .8s ease .9s backwards, spin 40s linear infinite; }
+    .js .intro .pro-name .ln > span { animation: m-rise .85s cubic-bezier(.2,.8,.2,1) .45s backwards; }
+    .js .intro .pro-name .ln + .ln > span { animation-delay: .55s; }
+    .js .intro .art-name .ch { animation: m-char .7s cubic-bezier(.2,.8,.2,1) backwards; animation-delay: calc(.45s + var(--i) * .035s); }
+    .js .intro .roles li { animation: m-fadeup .6s cubic-bezier(.2,.8,.2,1) backwards; }
+    .js .intro .roles li:nth-child(1) { animation-delay: .75s; }
+    .js .intro .roles li:nth-child(2) { animation-delay: .83s; }
+    .js .intro .roles li:nth-child(3) { animation-delay: .91s; }
+    .js .intro .art-roles { animation: m-fadeup .6s cubic-bezier(.2,.8,.2,1) .85s backwards; }
+    .js .intro .half .btn { animation: m-fadeup .6s cubic-bezier(.2,.8,.2,1) 1.05s backwards; }
+
+    /* handle: a soft "ping" invites a drag until the visitor touches it */
+    @keyframes m-ping { 0% { transform: scale(1); opacity: .75; } 80%, 100% { transform: scale(1.95); opacity: 0; } }
+    .handle::after { content: ""; position: absolute; inset: -7px; border-radius: 50%; border: 2px solid var(--green); pointer-events: none; opacity: 0; animation: m-ping 2.4s ease-out 3.6s infinite; }
+    .duo.touched .handle::after { animation: none; }
+    .duo.dragging .divider::before { box-shadow: 0 0 28px oklch(0.70 0.18 145 / .9); }
+
+    /* hidden layers come alive the first time they're uncovered */
+    @keyframes m-bubble { from { opacity: 0; scale: .35; } }
+    .collage.pop img { animation: m-bubble .6s cubic-bezier(.3,1.6,.5,1) backwards; }
+    .collage.pop img:nth-child(2) { animation-delay: .06s; } .collage.pop img:nth-child(3) { animation-delay: .12s; }
+    .collage.pop img:nth-child(4) { animation-delay: .18s; } .collage.pop img:nth-child(5) { animation-delay: .24s; }
+    .collage.pop img:nth-child(6) { animation-delay: .30s; }
+
+    /* console: lines type themselves once it's on screen */
+    @keyframes m-type { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+    .js .console.armed .cl { clip-path: inset(0 100% 0 0); }
+    .js .console.typing .cl { animation: m-type .55s steps(22, end) forwards; animation-delay: calc(var(--i) * .42s); }
+
+    /* GGG characters bob while they drift */
+    @keyframes m-bob { 50% { translate: 0 -8px; } }
+    .ggg-track img { animation: m-bob 3.6s ease-in-out infinite; }
+    .ggg-track img:nth-child(3n+2) { animation-delay: -1.2s; }
+    .ggg-track img:nth-child(3n) { animation-delay: -2.4s; }
+
+    /* viewer: image pops in (when view transitions aren't available) */
+    @keyframes m-zoomin { from { opacity: 0; scale: .9; } }
+    dialog.lb[open] .lb-stage img { animation: m-zoomin .35s cubic-bezier(.2,.8,.2,1); }
+    .vt dialog.lb[open] .lb-stage img { animation: none; }
+    ::view-transition-group(lbimg) { animation-duration: .45s; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
+    ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .3s; }
+
+    /* ---------- desktop pointer extras ---------- */
+    @media (hover: hover) and (pointer: fine) {
+      .cur { display: grid; place-items: center; position: fixed; left: 0; top: 0; z-index: 90; width: 34px; height: 34px; margin: -17px 0 0 -17px;
+        border: 1.5px solid var(--green); border-radius: 50%; pointer-events: none; opacity: 0;
+        transform: translate3d(var(--cx, -100px), var(--cy, -100px), 0) scale(var(--ck, 1));
+        transition: opacity .25s, background-color .25s, border-color .25s; }
+      .cur span { font: 500 8px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bg); opacity: 0; transition: opacity .2s; }
+      .cur.on { opacity: 1; }
+      .cur.link { background: oklch(0.70 0.18 145 / .18); }
+      .cur.view { background: var(--green); border-color: var(--green); }
+      .cur.view span { opacity: 1; }
+      .cur.drag { opacity: 0; }
+
+      /* 3D tilt + light sheen on artwork */
+      .gallery .tile, .feature .tile { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .5s cubic-bezier(.2,.8,.2,1); will-change: transform; }
+      .gallery .tile.tilting, .feature .tile.tilting { transition: transform .08s linear; }
+      .gallery .tile::before, .feature .tile::before { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; pointer-events: none;
+        background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), oklch(1 0 0 / .22), transparent 55%); opacity: 0; transition: opacity .3s; }
+      .gallery .tile:hover::before, .feature .tile:hover::before { opacity: 1; }
+    }
+  }
+
+  /* ---------- scroll-linked motion (browsers with scroll timelines) ---------- */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      @keyframes m-in { from { opacity: .08; transform: translateY(46px); } }
+      @keyframes m-in-soft { from { transform: translateY(26px); } }
+      .js .reveal { opacity: 1; transform: none; transition: none;
+        animation: m-in linear both; animation-timeline: view(); animation-range: entry 0% entry 260px; }
+
+      /* chapter letters fill with ink as you scroll into the chapter */
+      @keyframes m-fill { from { background-size: 100% 0%; } to { background-size: 100% 100%; } }
+      .chap-letter { background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 100% / 100% 0%;
+        -webkit-background-clip: text; background-clip: text;
+        animation: m-fill linear both; animation-timeline: view(); animation-range: entry 30% cover 60%; }
+
+      /* photos drift inside their frames */
+      @keyframes m-plx { from { translate: 0 -7%; } to { translate: 0 7%; } }
+      .photos .tile img, .stadiums .tile img, .community .tile img { scale: 1.16; animation: m-plx linear both; animation-timeline: view(); animation-range: cover; }
+
+      /* timeline rows slide in one after another */
+      @keyframes m-slide { from { opacity: .1; transform: translateX(-26px); } }
+      .timeline li { animation: m-slide linear both; animation-timeline: view(); animation-range: entry 0% entry 90px; }
+
+      @media (max-width: 760px) {
+        /* phones: movement only, never fade content out */
+        .js .reveal { animation-name: m-in-soft; animation-range: entry 0% entry 200px; }
+        .timeline li { animation: none; }
+      }
+    }
+  }
 </style>
 </head>
 <body>
@@ -515,11 +647,13 @@
     <span class="mono clock"><span class="loc">Bangkok ◉ </span>BKK <b id="time">--:--</b></span>
     <a class="hbtn mono" href="#contact" data-spy="contact">Contact me</a>
   </div>
+  <span class="progress" aria-hidden="true"></span>
 </header>
+<div class="cur" aria-hidden="true"><span>view</span></div>
 
 <h1 class="sr">Watcharawich (Philly) Jirawongsapan, also known as chlorophilly</h1>
 
-<section class="duo" id="top" aria-label="Two sides: professional and artist">
+<section class="duo intro" id="top" aria-label="Two sides: professional and artist">
   <!-- side A -->
   <div class="side pro light">
     <div class="half main">
@@ -533,7 +667,7 @@
         <div class="arch-img"><img src="img/philly.jpg" width="737" height="737" alt="Portrait of Philly in a black turtleneck and blazer against a concrete wall"></div>
       </figure>
       <div class="ptxt">
-        <p class="pro-name">Watcharawich<br>Jirawongsapan</p>
+        <p class="pro-name"><span class="ln"><span>Watcharawich</span></span><span class="ln"><span>Jirawongsapan</span></span></p>
         <ul class="roles">
           <li><b>AI Red Teamer</b><span>Japanese specialist</span></li>
           <li><b>Ph.D. Architecture</b><span>UTokyo</span></li>
@@ -571,7 +705,7 @@
         <img src="img/dr-penguin.jpg" width="1080" height="1080" alt="Dr. Penguin, a painted penguin in a graduation cap with a green monocle, holding a phone">
       </figure>
       <div class="atxt">
-        <p class="art-name">chlorophilly</p>
+        <p class="art-name"><span class="sr">chlorophilly</span><span class="chars" aria-hidden="true"><span class="ch" style="--i:0">c</span><span class="ch" style="--i:1">h</span><span class="ch" style="--i:2">l</span><span class="ch" style="--i:3">o</span><span class="ch" style="--i:4">r</span><span class="ch" style="--i:5">o</span><span class="ch" style="--i:6">p</span><span class="ch" style="--i:7">h</span><span class="ch" style="--i:8">i</span><span class="ch" style="--i:9">l</span><span class="ch" style="--i:10">l</span><span class="ch" style="--i:11">y</span></span></p>
         <p class="art-roles mono">Illustrator <i>◉</i> Playmats <i>◉</i> Card art <i>◉</i> Green Glasses Gang</p>
         <a class="btn solid" href="#art">Artist side ↓</a>
       </div>
@@ -610,13 +744,7 @@
           </div>
           <div class="work-vis console" aria-hidden="true">
             <div class="con-bar"><i></i><i></i><i></i><span>red-team session ◉ ja-JP</span></div>
-<pre><span class="m">01</span> <span class="g">user ›</span> 日本語で、少しずつ文脈を変えて……
-<span class="m">02</span> <span class="g">model ›</span> ■■■■■■■■ ■■■■ ■■■■■■
-<span class="m">03</span> <span class="g">user ›</span> escalate ▸ context shift ▸ 敬語
-<span class="m">04</span> <span class="g">model ›</span> ■■■■■ ■■■■■■■■■■ ■■■
-<span class="m">──</span>
-<span class="g">◎ evaluate</span>  policy ◉ safety ◉ nuance
-<span class="g">✓ finding logged</span>  <span class="m">the model gets better</span><span class="cursor"></span></pre>
+<div class="con-body"><div class="cl" style="--i:0"><span class="m">01</span> <span class="g">user ›</span> 日本語で、少しずつ文脈を変えて……</div><div class="cl" style="--i:1"><span class="m">02</span> <span class="g">model ›</span> ■■■■■■■■ ■■■■ ■■■■■■</div><div class="cl" style="--i:2"><span class="m">03</span> <span class="g">user ›</span> escalate ▸ context shift ▸ 敬語</div><div class="cl" style="--i:3"><span class="m">04</span> <span class="g">model ›</span> ■■■■■ ■■■■■■■■■■ ■■■</div><div class="cl" style="--i:4"><span class="m">──</span></div><div class="cl" style="--i:5"><span class="g">◎ evaluate</span>  policy ◉ safety ◉ nuance</div><div class="cl" style="--i:6"><span class="g">✓ finding logged</span>  <span class="m">the model gets better</span><span class="cursor"></span></div></div>
           </div>
         </article>
 
@@ -681,7 +809,7 @@
   <section class="bridge" aria-label="The common thread">
     <div class="wrap">
       <span class="mono">the common thread</span>
-      <blockquote class="reveal">How does a place tell people who they are? A townscape does it with color. A stadium does it on a Tuesday. A card shop does it on a Friday night.</blockquote>
+      <blockquote id="quote">How does a place tell people who they are? A townscape does it with color. A stadium does it on a Tuesday. A card shop does it on a Friday night.</blockquote>
     </div>
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
@@ -771,7 +899,7 @@
   <!-- ============ CONTACT ============ -->
   <section class="contact wrap" id="contact" aria-labelledby="contact-h">
     <p class="mono" style="color:var(--muted);margin:0 0 12px">A + B ◉ contact</p>
-    <h2 id="contact-h">Say hi<span>.</span></h2>
+    <h2 id="contact-h" class="reveal">Say hi<span>.</span></h2>
     <p class="lede" style="margin-bottom:22px">Research, red teaming, business, commissions, playmats, collabs. Or just a good card game story.</p>
     <p style="margin:0">
       <a class="email" id="email" href="#contact" data-u="contact" data-d="chlorophilly.com">contact [at] chlorophilly.com</a>
@@ -869,6 +997,7 @@
     handle.setAttribute('aria-valuenow', p);
     handle.setAttribute('aria-valuetext', `${p} percent professional, ${a} percent artist`);
     if (touched) setLead(split > 50 ? 'pro' : split < 50 ? 'art' : lead);
+    window.onSplit?.(split);
   }
 
   // The heavier side leads: scrolling down from the hero shows that chapter first
@@ -919,9 +1048,9 @@
   // One gentle sway on load so the handle reads as draggable (skipped once the visitor reaches for it)
   handle.addEventListener('pointerenter', touch);
   if (!reduce) {
-    setTimeout(() => { if (!touched) setSplit(58); }, 900);
-    setTimeout(() => { if (!touched) setSplit(42); }, 1700);
-    setTimeout(() => { if (!touched) setSplit(50); }, 2500);
+    setTimeout(() => { if (!touched) setSplit(58); }, 1800);
+    setTimeout(() => { if (!touched) setSplit(42); }, 2600);
+    setTimeout(() => { if (!touched) setSplit(50); }, 3400);
   }
 
   // Nav: highlight the side you're reading
@@ -995,10 +1124,11 @@
     tile.addEventListener('click', () => {
       const g = tile.closest('[data-group]');
       group = g ? [...g.querySelectorAll('.tile')] : [tile];
-      idx = group.indexOf(tile); show(); lb.showModal();
+      idx = group.indexOf(tile);
+      window.openViewer ? window.openViewer(tile) : (show(), lb.showModal());
     });
   });
-  document.getElementById('lbClose').addEventListener('click', () => lb.close());
+  document.getElementById('lbClose').addEventListener('click', () => window.closeViewer ? window.closeViewer() : lb.close());
   lbPrev.addEventListener('click', () => go(-1));
   lbNext.addEventListener('click', () => go(1));
   lbZoom.addEventListener('click', () => { if (s > 1.01) resetZ(); else { zoomAt(2.5, 0, 0); applyT(); } });
@@ -1034,7 +1164,7 @@
       if (!moved) {
         if (start.onImg) {
           if (s > 1.01) resetZ(); else { const [cx, cy] = center(); zoomAt(2.5, e.clientX - cx, e.clientY - cy); applyT(); }
-        } else if (s <= 1.01) lb.close();
+        } else if (s <= 1.01) (window.closeViewer ? window.closeViewer() : lb.close());
       } else if (s <= 1.01 && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
         go(dx < 0 ? 1 : -1);
       } else applyT();
@@ -1059,7 +1189,8 @@
   lb.addEventListener('close', resetZ);
 
   // Reveal on scroll (desktop only, starts before things enter view)
-  if ('IntersectionObserver' in window && !reduce) {
+  const scrollTL = CSS.supports('animation-timeline: view()');
+  if ('IntersectionObserver' in window && !reduce && !scrollTL) {
     const io = new IntersectionObserver((entries) => entries.forEach(en => {
       if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
     }), { rootMargin: '0px 0px 25% 0px' });
@@ -1067,6 +1198,210 @@
   } else {
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
   }
+
+  // =====================================================================
+  // MOTION LAYER (2026-09-25)
+  // =====================================================================
+  (() => {
+    const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const vh = () => innerHeight;
+
+    // header scroll progress
+    const root = document.documentElement;
+    const setProg = () => bar.style.setProperty('--p', Math.min(1, scrollY / Math.max(1, root.scrollHeight - vh())).toFixed(4));
+
+    // bridge quote: words light up as you read down
+    const quote = document.getElementById('quote');
+    let words = [];
+    if (!reduce && quote) {
+      const walk = (node) => [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(part => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) frag.append(part);
+            else { const w = document.createElement('span'); w.className = 'w'; w.textContent = part; frag.append(w); }
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1) walk(n);
+      });
+      walk(quote);
+      words = [...quote.querySelectorAll('.w')];
+      words.forEach(w => { w.style.transition = 'opacity .25s linear'; });
+    }
+    const setWords = () => {
+      if (!words.length) return;
+      const r = quote.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > vh() + 200) return;
+      const startY = vh() * 0.88, endY = vh() * 0.35;
+      const p = Math.min(1, Math.max(0, (startY - r.top) / (startY - endY + r.height * 0.6)));
+      const lit = p * (words.length + 2);
+      words.forEach((w, i) => { w.style.opacity = Math.max(0.2, Math.min(1, lit - i)).toFixed(2); });
+    };
+
+    // marquees: speed up with scroll, flip with scroll direction, lean into the motion
+    const lanes = [];
+    const lane = (sel, dir, secs, skew) => {
+      const el = document.querySelector(sel); if (!el) return;
+      lanes.push({ el, dir, secs, skew, x: 0, half: 0, seen: false });
+    };
+    if (!reduce) {
+      lane('.marquee-track', -1, 40, true);
+      lane('.ggg-track', 1, 50, false);
+      lanes.forEach(L => {
+        L.el.style.animation = 'none';
+        L.half = L.el.scrollWidth / 2;
+        if (L.dir > 0) L.x = -L.half;
+        const io = new IntersectionObserver(([e]) => { L.seen = e.isIntersecting; }, { rootMargin: '200px 0px' });
+        io.observe(L.el);
+        L.el.parentElement.addEventListener('pointerenter', () => { L.hover = true; });
+        L.el.parentElement.addEventListener('pointerleave', () => { L.hover = false; });
+      });
+      addEventListener('resize', () => lanes.forEach(L => { L.half = L.el.scrollWidth / 2; }));
+    }
+    let lastY = scrollY, vel = 0, flip = 1, lastT = performance.now();
+    const tickLanes = (now) => {
+      const dt = Math.min(64, now - lastT) / 1000; lastT = now;
+      const dy = scrollY - lastY; lastY = scrollY;
+      vel += ((dt ? dy / dt : 0) - vel) * 0.12;
+      if (Math.abs(dy) > 2) flip = dy > 0 ? 1 : -1;
+      const boost = 1 + Math.min(Math.abs(vel) / 350, 5);
+      lanes.forEach(L => {
+        if (!L.seen || !L.half) return;
+        const base = L.half / L.secs;
+        const hoverSlow = L.hover && !L.skew ? 0.15 : 1;
+        L.x += L.dir * flip * base * boost * hoverSlow * dt;
+        if (L.x <= -L.half) L.x += L.half; if (L.x > 0) L.x -= L.half;
+        const sk = L.skew ? Math.max(-6, Math.min(6, -vel * 0.004)) : 0;
+        L.el.style.transform = `translate3d(${L.x.toFixed(1)}px,0,0) skewX(${sk.toFixed(2)}deg)`;
+      });
+      requestAnimationFrame(tickLanes);
+    };
+    if (lanes.length) requestAnimationFrame(tickLanes);
+
+    // numbers count up when they arrive
+    const countUp = (b, delay = 0) => {
+      const m = b.textContent.match(/^(\d+)(.*)$/); if (!m || b.dataset.done) return;
+      b.dataset.done = 1;
+      const target = +m[1], suffix = m[2], t0 = performance.now() + delay, dur = 1300;
+      const step = (now) => {
+        const k = Math.min(1, Math.max(0, (now - t0) / dur));
+        b.textContent = Math.round(target * (1 - Math.pow(1 - k, 4))) + (k === 1 ? suffix : '');
+        if (k < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    if (!reduce) {
+      const nums = [...document.querySelectorAll('.numbers b')];
+      const list = document.querySelector('.numbers');
+      if (list && list.getBoundingClientRect().top > vh()) {
+        nums.forEach(b => { b.dataset.final = b.textContent; b.textContent = '0'; });
+        new IntersectionObserver((es, o) => es.forEach(e => {
+          if (!e.isIntersecting) return;
+          nums.forEach((b, i) => { b.textContent = b.dataset.final; countUp(b, i * 120); });
+          o.disconnect();
+        }), { threshold: 0.45 }).observe(list);
+      }
+    }
+
+    // hidden layers in the hero: stats count, collage pops, the first time each is uncovered
+    const stats = [...document.querySelectorAll('.stats b')], collage = document.querySelector('.collage');
+    let statsDone = false, collageDone = false;
+    window.onSplit = (v) => {
+      if (reduce) return;
+      if (!statsDone && v > 62) { statsDone = true; stats.forEach((b, i) => countUp(b, i * 90)); }
+      if (!collageDone && v < 38) { collageDone = true; collage.classList.add('pop'); }
+    };
+
+    // console types itself once
+    const con = document.querySelector('.console');
+    if (!reduce && con && 'IntersectionObserver' in window) {
+      con.classList.add('armed');
+      new IntersectionObserver((es, o) => es.forEach(e => {
+        if (e.isIntersecting) { con.classList.add('typing'); o.disconnect(); }
+      }), { threshold: 0.5 }).observe(con);
+    }
+
+    // viewer: the artwork grows out of its tile (View Transitions where supported)
+    let srcImg = null;
+    const canVT = !reduce && typeof document.startViewTransition === 'function';
+    if (canVT) root.classList.add('vt');
+    window.openViewer = (tile) => {
+      const im = tile.querySelector('img');
+      if (!canVT) { show(); lb.showModal(); return; }
+      srcImg = im;
+      im.style.viewTransitionName = 'lbimg';
+      document.startViewTransition(() => {
+        im.style.viewTransitionName = '';
+        show(); lb.showModal();
+        vImg.style.viewTransitionName = 'lbimg';
+      }).finished.finally(() => { vImg.style.viewTransitionName = ''; });
+    };
+    window.closeViewer = () => {
+      const back = group[idx]?.querySelector('img');
+      if (!canVT || !back || s > 1.01) { lb.close(); return; }
+      const r = back.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh()) { lb.close(); return; }
+      vImg.style.viewTransitionName = 'lbimg';
+      document.startViewTransition(() => {
+        vImg.style.viewTransitionName = '';
+        lb.close();
+        back.style.viewTransitionName = 'lbimg';
+      }).finished.finally(() => { back.style.viewTransitionName = ''; });
+    };
+    lb.addEventListener('cancel', (e) => { if (canVT) { e.preventDefault(); window.closeViewer(); } });
+
+    // desktop: monocle cursor ring + artwork tilt
+    if (fine && !reduce) {
+      const cur = document.querySelector('.cur');
+      let tx = -100, ty = -100, cx = -100, cy = -100, ck = 1, tk = 1;
+      addEventListener('pointermove', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        tx = e.clientX; ty = e.clientY; cur.classList.add('on');
+        const t = e.target;
+        const onTile = t.closest && t.closest('.tile');
+        const onHandle = t.closest && t.closest('.handle');
+        const onLink = t.closest && t.closest('a, button, [role="slider"], .copy');
+        cur.classList.toggle('view', !!onTile);
+        cur.classList.toggle('link', !onTile && !!onLink);
+        cur.classList.toggle('drag', !!onHandle);
+        tk = onTile ? 2.2 : onLink ? 1.5 : 1;
+      }, { passive: true });
+      document.addEventListener('pointerleave', () => cur.classList.remove('on'));
+      lb.addEventListener('close', () => cur.classList.remove('on'));
+      const loop = () => {
+        cx += (tx - cx) * 0.22; cy += (ty - cy) * 0.22; ck += (tk - ck) * 0.18;
+        cur.style.setProperty('--cx', cx.toFixed(1) + 'px'); cur.style.setProperty('--cy', cy.toFixed(1) + 'px'); cur.style.setProperty('--ck', ck.toFixed(3));
+        requestAnimationFrame(loop);
+      };
+      requestAnimationFrame(loop);
+
+      document.querySelectorAll('.gallery .tile, .feature .tile').forEach(tile => {
+        tile.addEventListener('pointermove', (e) => {
+          const r = tile.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+          tile.classList.add('tilting');
+          tile.style.setProperty('--ry', ((px - 0.5) * 12).toFixed(2) + 'deg');
+          tile.style.setProperty('--rx', ((0.5 - py) * 12).toFixed(2) + 'deg');
+          tile.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+          tile.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+        });
+        tile.addEventListener('pointerleave', () => {
+          tile.classList.remove('tilting');
+          tile.style.setProperty('--rx', '0deg'); tile.style.setProperty('--ry', '0deg');
+        });
+      });
+    }
+
+    let ticking = false;
+    const onScrollFx = () => {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(() => { ticking = false; setProg(); setWords(); });
+    };
+    addEventListener('scroll', onScrollFx, { passive: true });
+    addEventListener('resize', onScrollFx);
+    setProg(); setWords();
+  })();
 </script>
 </body>
 </html>
