@@ -394,6 +394,7 @@
     cursor: zoom-in; -webkit-user-drag: none; will-change: transform;
   }
   .lb-stage img.zoomed { cursor: grab; }
+  .lb-stage img.small { max-height: min(calc(100dvh - 130px), 620px); border-radius: 3.5%; }
   .lb-stage.live img { transition: none; }
   .lb-stage.live img.zoomed { cursor: grabbing; }
   .lb-bar { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; padding: 10px 16px 4px; }
@@ -501,6 +502,76 @@
     .tile img, .links a, .email, .handle { transition: none; }
   }
 
+
+  /* ===== showreel ===== */
+  .reel { margin: 0 0 clamp(36px, 6vh, 64px); max-width: 1000px; }
+  .reel-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000;
+    box-shadow: 0 40px 120px oklch(0 0 0 / .65), 0 0 0 1px var(--line); }
+  .reel-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .reel-btn { position: absolute; left: 14px; bottom: 16px; width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer;
+    background: oklch(0.13 0.008 280 / .7); backdrop-filter: blur(6px); display: grid; place-items: center; color: var(--ink); }
+  .reel-btn:hover, .reel-btn:focus-visible { background: var(--green); color: var(--bg); outline: none; }
+  .ico-play { width: 0; height: 0; border-left: 13px solid currentColor; border-top: 8px solid transparent; border-bottom: 8px solid transparent; margin-left: 3px; }
+  .reel.playing .ico-play { width: 12px; height: 14px; border: 0; margin: 0; border-left: 4px solid currentColor; border-right: 4px solid currentColor; }
+  .reel-full { position: absolute; right: 14px; bottom: 16px; width: 40px; height: 40px; border-radius: 50%; border: 0; cursor: pointer; font-size: 17px;
+    background: oklch(0.13 0.008 280 / .7); backdrop-filter: blur(6px); color: var(--ink); }
+  .reel-full:hover, .reel-full:focus-visible { background: var(--green); color: var(--bg); outline: none; }
+  .reel-prog { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: oklch(0.96 0.02 90 / .14); }
+  .reel-prog i { display: block; height: 100%; width: 100%; background: var(--green); transform-origin: 0 50%; transform: scaleX(0); }
+
+  /* ===== VIBES card rail ===== */
+  .vibes { margin-top: clamp(64px, 12vh, 130px); }
+  .vibes .sub-head { margin-top: 0; }
+  .vb-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font: 13px var(--mono); color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 99px; padding: 8px 14px; cursor: pointer; transition: color .2s, border-color .2s, background .2s; }
+  .chip i { font-style: normal; opacity: .6; margin-left: 4px; }
+  .chip:hover, .chip:focus-visible { color: var(--ink); border-color: var(--green); outline: none; }
+  .chip.on { background: var(--green); border-color: var(--green); color: var(--bg); }
+  .chip.on i { opacity: .8; }
+  .vb-nav { display: flex; gap: 8px; }
+  .vb-arrow { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; font-size: 16px; transition: border-color .2s, color .2s, opacity .2s; }
+  .vb-arrow:hover, .vb-arrow:focus-visible { border-color: var(--green); color: var(--green-hi); outline: none; }
+  .vb-arrow:disabled { opacity: .3; cursor: default; }
+  .rail { display: flex; gap: clamp(10px, 1.2vw, 18px); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
+    padding: 18px 2px 30px; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--gutter), #000 calc(100% - var(--gutter)), transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 var(--gutter), #000 calc(100% - var(--gutter)), transparent); }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail.grabbing { cursor: grabbing; scroll-snap-type: none; }
+  .rail .card { flex: 0 0 clamp(150px, 16vw, 220px); width: auto; aspect-ratio: 365 / 510; scroll-snap-align: start; border-radius: 4.9% / 3.5%; overflow: hidden;
+    background: #0e0d12; box-shadow: 0 14px 34px oklch(0 0 0 / .5); transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s; }
+  .rail .card img { border-radius: inherit; }
+  .rail .card::after { border-radius: inherit; }
+  .card .foil { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 1; opacity: 0;
+    background: linear-gradient(115deg, transparent 28%, oklch(0.9 0.12 150 / .55) 40%, oklch(0.9 0.12 300 / .45) 48%, oklch(0.95 0.1 80 / .5) 56%, transparent 68%);
+    background-size: 250% 250%; background-position: var(--fx, 50%) var(--fy, 50%); mix-blend-mode: color-dodge; transition: opacity .35s; }
+  .vb-credit { color: var(--muted); margin: 6px 0 0; }
+  .vb-credit a { color: var(--ink); }
+  .open-now { display: inline-flex; align-items: center; gap: 10px; color: var(--green-hi); margin: 0 0 16px; padding: 7px 14px; border: 1px solid oklch(0.70 0.18 145 / .4); border-radius: 99px; }
+  .open-now i { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); }
+  @media (max-width: 760px) {
+    .vb-nav { display: none; }
+    .rail .card { flex-basis: 42vw; }
+    .reel-btn { width: 38px; height: 38px; left: 10px; bottom: 12px; }
+    .reel-full { width: 36px; height: 36px; right: 10px; bottom: 12px; font-size: 15px; }
+    .open-now { font-size: 11.5px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes m-deal { from { opacity: 0; transform: translateY(70px) rotate(calc(var(--r, 0) * 1deg)) scale(.92); } }
+    .js .rail.armed .card { opacity: 0; }
+    .js .rail.dealt .card { animation: m-deal .75s cubic-bezier(.2,.9,.25,1.05) backwards; animation-delay: calc(var(--k, 0) * 55ms); }
+    @keyframes m-sheen { 0% { opacity: 0; background-position: 0% 0%; } 30% { opacity: .9; } 100% { opacity: 0; background-position: 100% 100%; } }
+    .rail.dealt .card .foil { animation: m-sheen 1.4s ease-out backwards; animation-delay: calc(var(--k, 0) * 55ms + .35s); }
+    @keyframes m-openpulse { 50% { box-shadow: 0 0 0 6px oklch(0.70 0.18 145 / 0); } 0% { box-shadow: 0 0 0 0 oklch(0.70 0.18 145 / .6); } }
+    .open-now i { animation: m-openpulse 2s ease-out infinite; }
+    @media (hover: hover) and (pointer: fine) {
+      .rail .card:hover { transform: translateY(-12px) perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); box-shadow: 0 30px 60px oklch(0 0 0 / .6), 0 0 0 2px var(--green); z-index: 2; }
+      .rail .card.tilting { transition: transform .08s linear, box-shadow .45s; }
+      .rail .card:hover .foil { opacity: .7; }
+      .rail .card::after { display: none; }
+    }
+  }
   /* =====================================================================
      MOTION LAYER (2026-09-25). Everything below is decorative and turns
      off completely under prefers-reduced-motion.
@@ -792,10 +863,10 @@
             <li><b>2017</b><span>Architectural intern, Studio NASCA, Tokyo</span></li>
             <li><b>2018</b><span>M.Arch, Chulalongkorn University</span></li>
             <li><b>2022</b><span>Co-founded Changlor. Art direction</span></li>
-            <li><b>2023</b><span>Blockchain research ◉ Reddit Collectible Avatars creator</span></li>
+            <li><b>2023</b><span>Blockchain research ◉ Featured artist, Reddit Collectible Avatars Gen 3</span></li>
             <li><b>2024</b><span>Ph.D. Architecture, The University of Tokyo</span></li>
             <li><b>2025</b><span>Co-founded <a class="inl" href="https://anubiscardsandcraft.com" target="_blank" rel="noopener">Anubis Cards &amp; Craft</a></span></li>
-            <li><b>2026</b><span>AI red teaming ◉ card art in Vibes TCG</span></li>
+            <li><b>2026</b><span>AI red teaming ◉ 25 cards for VIBES TCG</span></li>
           </ol>
           <div class="pro-links">
             <a class="btn ink" href="https://www.linkedin.com/in/watcharawich-jirawongsapan/" target="_blank" rel="me noopener">LinkedIn ↗</a>
@@ -829,9 +900,22 @@
         <div>
           <p class="mono">side b ◉ artist</p>
           <h2 id="art-h">I draw things.</h2>
-          <p class="lede">Playmats, card art for <strong>Vibes TCG</strong>, and a whole multiverse of characters. Grayscale worlds, one green light. Years of pulling a beautiful card and wondering who drew it. Now some of them are mine.</p>
+          <p class="lede">Card art, playmats, and a whole multiverse of characters. Grayscale worlds, one green light. Years of pulling a beautiful card and wondering who drew it. Now <strong>25 of them are mine</strong>.</p>
         </div>
       </div>
+
+      <figure class="reel reveal">
+        <div class="reel-frame">
+          <video id="reel" muted loop playsinline preload="none" poster="video/showreel-poster.jpg" aria-label="Chlorophilly showreel 2026, 38 seconds, silent">
+            <source src="video/showreel-540.mp4" type="video/mp4" media="(max-width: 760px)">
+            <source src="video/showreel-1080.mp4" type="video/mp4">
+          </video>
+          <button class="reel-btn" id="reelBtn" type="button" aria-label="Play showreel"><span class="ico-play" aria-hidden="true"></span></button>
+          <button class="reel-full" id="reelFull" type="button" aria-label="Watch the showreel full screen">⤢</button>
+          <div class="reel-prog" aria-hidden="true"><i id="reelProg"></i></div>
+        </div>
+        <figcaption class="feature-cap mono"><span>showreel 2026</span><span>0:38 ◉ illustration ◉ card art ◉ character design</span></figcaption>
+      </figure>
 
       <div data-group="art">
         <figure class="feature latest reveal">
@@ -860,15 +944,65 @@
         <img src="img/process.jpg" loading="lazy" alt="Philly drawing on an iPad">
         <p class="mono">Collected on OpenSea, Foundation and Reddit Collectible Avatars ◉ Exhibited at Thailand Blockchain Genesis 2023 ◉ Artist on the side (and also not on the side).</p>
       </div>
+
+      <div class="vibes" id="vibes">
+        <div class="sub-head reveal">
+          <p class="mono"><b>B.2</b>Card art</p>
+          <div>
+            <h3>25 cards in VIBES TCG</h3>
+            <p class="lede">Illustrations for <strong>Orange Cap Games</strong>, including the Pudgy Penguins x Moonbirds set. Wizbirbs, penguins, and a lot of tiny drama.</p>
+          </div>
+        </div>
+        <div class="vb-bar">
+          <div class="chips" role="group" aria-label="Filter cards by type">
+            <button class="chip on" type="button" data-f="all" aria-pressed="true">All <i>25</i></button>
+            <button class="chip" type="button" data-f="character" aria-pressed="false">Characters <i>16</i></button>
+            <button class="chip" type="button" data-f="fit" aria-pressed="false">Fits <i>4</i></button>
+            <button class="chip" type="button" data-f="action" aria-pressed="false">Actions <i>5</i></button>
+          </div>
+          <div class="vb-nav">
+            <button class="vb-arrow" type="button" data-d="-1" aria-label="Scroll cards back">←</button>
+            <button class="vb-arrow" type="button" data-d="1" aria-label="Scroll cards forward">→</button>
+          </div>
+        </div>
+        <div class="rail" id="rail" data-group="vibes" aria-label="VIBES TCG cards illustrated by chlorophilly">
+          <button class="tile card" type="button" data-type="character" style="--i:0"><img src="img/vibes/archaeologist-penguin.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Archaeologist Penguin (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:1"><img src="img/vibes/bachelor-birb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Bachelor Birb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:2"><img src="img/vibes/birb-who-finds-the-way.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Birb Who Finds the Way (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:3"><img src="img/vibes/cinematic-birb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Cinematic Birb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:4"><img src="img/vibes/frostbitten-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Frostbitten Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:5"><img src="img/vibes/inferno-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Inferno Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:6"><img src="img/vibes/lil-balanced.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Lil Balanced (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:7"><img src="img/vibes/lumberjack-penguin.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Lumberjack Penguin (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:8"><img src="img/vibes/nightveil-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Nightveil Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:9"><img src="img/vibes/pizza-penguin.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Pizza Penguin (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:10"><img src="img/vibes/protector-penguin.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Protector Penguin (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:11"><img src="img/vibes/quantum-birb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Quantum Birb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:12"><img src="img/vibes/stonebreaker-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Stonebreaker Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:13"><img src="img/vibes/stormreaper-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Stormreaper Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:14"><img src="img/vibes/the-great-pengsby.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: The Great Pengsby (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="character" style="--i:15"><img src="img/vibes/the-rodromancer.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: The Rodromancer (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="fit" style="--i:16"><img src="img/vibes/arctic-ring.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Arctic Ring (Fit), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="fit" style="--i:17"><img src="img/vibes/book-of-wonders.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Book of Wonders (Fit), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="fit" style="--i:18"><img src="img/vibes/heros-shield.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Hero&#x27;s Shield (Fit), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="fit" style="--i:19"><img src="img/vibes/heros-sword.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Hero&#x27;s Sword (Fit), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="action" style="--i:20"><img src="img/vibes/bullish-sentiment.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Bullish Sentiment (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="action" style="--i:21"><img src="img/vibes/double-the-luck.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Double the Luck (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="action" style="--i:22"><img src="img/vibes/on-thin-ice.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: On Thin Ice (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="action" style="--i:23"><img src="img/vibes/reminisce.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Reminisce (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" type="button" data-type="action" style="--i:24"><img src="img/vibes/step-by-step.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Step by Step (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+        </div>
+        <p class="mono vb-credit">Illus. chlorophilly ◉ Orange Cap Games ◉ <a href="https://www.vibes.game/spoiler" target="_blank" rel="noopener">See them in the card library ↗</a></p>
+      </div>
     </div>
 
     <div class="ggg" id="ggg">
       <div class="wrap">
         <div class="sub-head reveal">
-          <p class="mono"><b>B.2</b>Universe</p>
+          <p class="mono"><b>B.3</b>Universe</p>
           <div>
             <h3>Green Glasses Gang</h3>
-            <p class="lede">A penguin with a green monocle and a lot of opinions about art. Plus everyone else who can feel the bubble multiverse. Started as a Reddit Collectible Avatar collection, still growing.</p>
+            <p class="lede">A penguin with a green monocle and a lot of opinions about art. Plus everyone else who can feel the bubble multiverse. Featured artist for Reddit Collectible Avatars Gen 3, and still growing.</p>
             <div class="cta">
               <a class="btn" href="https://foundation.app/@chlorophilly" target="_blank" rel="noopener">Foundation ↗</a>
               <a class="btn" href="https://lit.link/en/chlorophilly" target="_blank" rel="noopener">All collections ↗</a>
@@ -886,7 +1020,7 @@
 
     <div class="wrap" id="photos" style="padding-block:0 clamp(72px,13vh,150px)">
       <div class="sub-head reveal">
-        <p class="mono"><b>B.3</b>Photography</p>
+        <p class="mono"><b>B.4</b>Photography</p>
         <div>
           <h3>Architect eyes never switch off.</h3>
           <p class="lede">I shoot places. Edges, frames, and the way people fill a space, or leave it empty. Yes, a lot of stadiums.</p>
@@ -906,6 +1040,7 @@
   <section class="contact wrap" id="contact" aria-labelledby="contact-h">
     <p class="mono" style="color:var(--muted);margin:0 0 12px">A + B ◉ contact</p>
     <h2 id="contact-h" class="reveal">Say hi<span>.</span></h2>
+    <p class="mono open-now"><i></i>Commissions open ◉ TCG card art ◉ Playmats ◉ Character design</p>
     <p class="lede" style="margin-bottom:22px">Research, red teaming, business, commissions, playmats, collabs. Or just a good card game story.</p>
     <p style="margin:0">
       <a class="email" id="email" href="#contact" data-u="contact" data-d="chlorophilly.com">contact [at] chlorophilly.com</a>
@@ -1118,6 +1253,7 @@
   const show = () => {
     const im = group[idx].querySelector('img');
     vImg.src = im.currentSrc || im.src; vImg.alt = im.alt;
+    vImg.classList.toggle('small', (im.naturalWidth || 9999) < 600);
     lbCount.textContent = `${idx + 1} / ${group.length}`;
     lbPrev.hidden = lbNext.hidden = group.length < 2;
     resetZ();
@@ -1129,7 +1265,7 @@
     tile.setAttribute('aria-label', 'Open larger: ' + (tile.querySelector('img').alt || 'image'));
     tile.addEventListener('click', () => {
       const g = tile.closest('[data-group]');
-      group = g ? [...g.querySelectorAll('.tile')] : [tile];
+      group = g ? [...g.querySelectorAll('.tile')].filter(t => !t.hidden) : [tile];
       idx = group.indexOf(tile);
       window.openViewer ? window.openViewer(tile) : (show(), lb.showModal());
     });
@@ -1204,6 +1340,138 @@
   } else {
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
   }
+
+
+  // =====================================================================
+  // SHOWREEL + VIBES CARDS (2026-10-18)
+  // =====================================================================
+  (() => {
+    // ---- showreel: plays muted while on screen, pauses when you scroll past ----
+    const reel = document.getElementById('reel'), fig = reel.closest('.reel');
+    const btn = document.getElementById('reelBtn'), full = document.getElementById('reelFull'), prog = document.getElementById('reelProg');
+    const saveData = navigator.connection && navigator.connection.saveData;
+    let userPaused = false, inView = false;
+    const setState = () => {
+      const on = !reel.paused;
+      fig.classList.toggle('playing', on);
+      btn.setAttribute('aria-label', on ? 'Pause showreel' : 'Play showreel');
+    };
+    const tryPlay = () => { if (reel.preload === 'none') reel.preload = 'auto'; reel.play().catch(() => {}); };
+    reel.addEventListener('play', setState); reel.addEventListener('pause', setState);
+    btn.addEventListener('click', () => {
+      if (reel.paused) { userPaused = false; tryPlay(); } else { userPaused = true; reel.pause(); }
+    });
+    full.addEventListener('click', () => {
+      const el = reel;
+      if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+      else if (el.webkitEnterFullscreen) el.webkitEnterFullscreen();
+      tryPlay();
+    });
+    const setView = (now) => {
+      if (now === inView) return;
+      inView = now;
+      if (inView && !userPaused && !reduce && !saveData) tryPlay();
+      if (!inView && !reel.paused) reel.pause();
+    };
+    new IntersectionObserver(([e]) => setView(e.intersectionRatio >= 0.35), { threshold: [0, 0.35] }).observe(fig);
+    // backup check on scroll, in case the observer is throttled
+    const checkReel = () => {
+      const r = fig.getBoundingClientRect();
+      const shown = Math.max(0, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0)) / Math.max(1, r.height);
+      setView(shown >= 0.35);
+    };
+    let lastCk = 0;
+    addEventListener('scroll', () => { const n = Date.now(); if (n - lastCk > 120) { lastCk = n; checkReel(); } }, { passive: true });
+    addEventListener('scrollend', checkReel);
+    setTimeout(checkReel, 300);
+    const tickProg = () => {
+      if (reel.duration) prog.style.transform = `scaleX(${(reel.currentTime / reel.duration).toFixed(4)})`;
+      if (!reel.paused) requestAnimationFrame(tickProg);
+    };
+    reel.addEventListener('play', () => requestAnimationFrame(tickProg));
+    reel.addEventListener('seeked', tickProg);
+
+    // ---- VIBES rail ----
+    const rail = document.getElementById('rail');
+    const cards = [...rail.querySelectorAll('.card')];
+    const chips = [...document.querySelectorAll('.chip')];
+    const arrows = [...document.querySelectorAll('.vb-arrow')];
+    const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const phoneNow = () => matchMedia('(max-width: 760px)').matches;
+
+    const updArrows = () => {
+      const max = rail.scrollWidth - rail.clientWidth - 2;
+      arrows[0].disabled = rail.scrollLeft <= 2;
+      arrows[1].disabled = rail.scrollLeft >= max;
+    };
+    arrows.forEach(a => a.addEventListener('click', () => rail.scrollBy({ left: +a.dataset.d * rail.clientWidth * 0.8, behavior: reduce ? 'auto' : 'smooth' })));
+    rail.addEventListener('scroll', updArrows, { passive: true });
+    addEventListener('resize', updArrows);
+    updArrows();
+
+    // filter by type; cards glide to their new places where View Transitions exist
+    const applyFilter = (f) => {
+      cards.forEach(c => { c.hidden = f !== 'all' && c.dataset.type !== f; });
+      chips.forEach(ch => { const on = ch.dataset.f === f; ch.classList.toggle('on', on); ch.setAttribute('aria-pressed', on); });
+      rail.scrollLeft = 0; updArrows();
+    };
+    chips.forEach(ch => ch.addEventListener('click', () => {
+      const f = ch.dataset.f;
+      if (!reduce && document.startViewTransition) {
+        cards.forEach((c, i) => { c.style.viewTransitionName = 'vc' + i; });
+        const clear = () => cards.forEach(c => { c.style.viewTransitionName = ''; });
+        document.startViewTransition(() => applyFilter(f)).finished.finally(clear);
+        setTimeout(clear, 1500);
+      } else applyFilter(f);
+    }));
+
+    // desktop: drag the rail with the mouse (a drag never opens a card)
+    if (fine) {
+      let down = null, dragged = false;
+      rail.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse' || e.button !== 0) return; down = { x: e.clientX, sl: rail.scrollLeft }; dragged = false; });
+      addEventListener('pointermove', (e) => {
+        if (!down) return;
+        const dx = e.clientX - down.x;
+        if (!dragged && Math.abs(dx) > 6) { dragged = true; rail.classList.add('grabbing'); }
+        if (dragged) rail.scrollLeft = down.sl - dx;
+      });
+      addEventListener('pointerup', () => { if (down) { down = null; rail.classList.remove('grabbing'); } });
+      rail.addEventListener('click', (e) => { if (dragged) { e.stopPropagation(); e.preventDefault(); dragged = false; } }, true);
+      rail.addEventListener('dragstart', (e) => e.preventDefault());
+    }
+
+    // desktop: cards tilt and catch the foil light under the cursor
+    if (fine && !reduce) cards.forEach(c => {
+      c.addEventListener('pointermove', (e) => {
+        const r = c.getBoundingClientRect(), px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+        c.classList.add('tilting');
+        c.style.setProperty('--ry', ((px - .5) * 16).toFixed(2) + 'deg');
+        c.style.setProperty('--rx', ((.5 - py) * 16).toFixed(2) + 'deg');
+        c.style.setProperty('--fx', (px * 100).toFixed(1) + '%');
+        c.style.setProperty('--fy', (py * 100).toFixed(1) + '%');
+      });
+      c.addEventListener('pointerleave', () => { c.classList.remove('tilting'); c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg'); });
+    });
+
+    // cards are dealt onto the table the first time the rail comes into view (desktop; phones stay put)
+    if (!reduce && !phoneNow() && rail.getBoundingClientRect().top > innerHeight) {
+      const vis = () => {
+        const rr = rail.getBoundingClientRect();
+        let k = 0;
+        cards.forEach(c => {
+          const r = c.getBoundingClientRect();
+          const on = r.right > rr.left && r.left < rr.right;
+          c.style.setProperty('--k', on ? k++ : 0);
+          c.style.setProperty('--r', ((Math.random() - .5) * 18).toFixed(1));
+        });
+      };
+      rail.classList.add('armed');
+      new IntersectionObserver((es, o) => es.forEach(e => {
+        if (!e.isIntersecting) return;
+        vis(); rail.classList.remove('armed'); rail.classList.add('dealt'); o.disconnect();
+      }), { threshold: 0.3 }).observe(rail);
+    }
+  })();
 
   // =====================================================================
   // MOTION LAYER (2026-09-25)
@@ -1342,6 +1610,7 @@
         show(); lb.showModal();
         vImg.style.viewTransitionName = 'lbimg';
       }).finished.finally(() => { vImg.style.viewTransitionName = ''; });
+      setTimeout(() => { vImg.style.viewTransitionName = ''; im.style.viewTransitionName = ''; }, 1500);
     };
     window.closeViewer = () => {
       const back = group[idx]?.querySelector('img');
@@ -1354,6 +1623,7 @@
         lb.close();
         back.style.viewTransitionName = 'lbimg';
       }).finished.finally(() => { back.style.viewTransitionName = ''; });
+      setTimeout(() => { back.style.viewTransitionName = ''; vImg.style.viewTransitionName = ''; }, 1500);
     };
     lb.addEventListener('cancel', (e) => { if (canVT) { e.preventDefault(); window.closeViewer(); } });
 
