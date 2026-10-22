@@ -572,6 +572,80 @@
       .rail .card::after { display: none; }
     }
   }
+
+  /* ===== UX layer (2026-10-22) ===== */
+  /* well-timed asks */
+  .ask { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 32px; align-items: center; margin: clamp(36px, 6vh, 60px) 0 0;
+    padding: clamp(20px, 3vw, 32px); border: 1px solid var(--line); border-radius: 14px; background: oklch(0.70 0.18 145 / .06); }
+  .ask.art { background: oklch(0.70 0.18 145 / .08); border-color: oklch(0.70 0.18 145 / .35); }
+  .ask-k { margin: 0 0 6px; color: var(--accent); display: inline-flex; align-items: center; gap: 8px; }
+  .ask-h { margin: 0; font-family: var(--display); font-weight: 800; font-size: clamp(20px, 2.4vw, 30px); line-height: 1.12; letter-spacing: -0.025em; max-width: 26em; }
+  .light .ask-h { font-stretch: 100%; }
+  .ask-sub { margin: 8px 0 0; color: var(--muted); }
+  .ask-act { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+  .ask-link { color: var(--muted); text-decoration: underline; text-underline-offset: 4px; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+  .ask-link:hover { color: var(--accent); }
+  .live { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); display: inline-block; flex: none; }
+
+  /* contact lanes */
+  .lanes { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.4vw, 18px); margin-bottom: 26px; max-width: 980px; }
+  .lane { display: grid; gap: 8px; align-content: start; padding: clamp(18px, 2.4vw, 28px); border-radius: 16px; text-decoration: none; color: var(--ink);
+    border: 1px solid var(--line); background: oklch(0.96 0.02 90 / .03); transition: border-color .25s, background .25s, transform .25s cubic-bezier(.2,.8,.2,1); }
+  .lane:hover, .lane:focus-visible { border-color: var(--green); background: oklch(0.70 0.18 145 / .08); transform: translateY(-3px); outline: none; }
+  .lane-k { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); }
+  .lane-k b { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; border: 1px solid currentColor; font-weight: 500; font-size: 11px; }
+  .lane-k .live { margin-left: 6px; }
+  .lane-h { font-family: var(--display); font-weight: 800; font-size: clamp(26px, 3.2vw, 42px); letter-spacing: -0.03em; line-height: 1; }
+  .lane.pro .lane-h { font-stretch: 100%; } .lane.art .lane-h { font-stretch: 125%; }
+  .lane-s { color: var(--muted); font-size: 15px; }
+  .lane-go { margin-top: 10px; color: var(--green-hi); display: inline-flex; gap: 8px; align-items: center; }
+  .or-direct { color: var(--muted); margin: 0 0 6px; }
+  .totop { color: var(--muted); text-decoration: none; display: inline-flex; gap: 8px; align-items: center; min-height: 44px; }
+  .totop:hover { color: var(--green-hi); }
+
+  /* arrows that point where they go */
+  .ar { display: inline-block; transition: transform .25s cubic-bezier(.2,.8,.2,1); }
+  a:hover .ar, button:hover .ar, a:focus-visible .ar { transform: translateX(3px); }
+  a:hover .ar.d, button:hover .ar.d, a:focus-visible .ar.d { transform: translateY(3px); }
+  a:hover .ar.u, a:focus-visible .ar.u { transform: translateY(-3px); }
+  a:hover .ar.ne, a:focus-visible .ar.ne { transform: translate(2px, -2px); }
+  .btn:active, .lane:active, .chip:active, .hbtn:active { scale: .97; }
+
+  /* viewer caption */
+  .lb-cap { margin: 0; text-align: center; color: var(--ink); font-size: 13px; min-height: 1em; padding: 2px 16px 0; }
+
+  /* hero hint sits on its own pill, never straddling the line unreadably */
+  .drag-hint { padding: 4px 10px; border-radius: 99px; background: oklch(0.13 0.008 280 / .82); backdrop-filter: blur(6px); color: var(--green-hi); }
+
+  /* arch text: hide the upside-down bottom run */
+  .dh-v { display: none; }
+  @media (max-width: 760px) { .dh-h { display: none; } .dh-v { display: inline; } }
+  .arch svg { -webkit-mask-image: linear-gradient(#000 76%, transparent 90%); mask-image: linear-gradient(#000 76%, transparent 90%); }
+
+  /* filter pill indicator */
+  .chips { position: relative; }
+  .chips.has-ind .chip.on { background: transparent; border-color: transparent; }
+  .chip { position: relative; z-index: 1; }
+  .chip-ind { position: absolute; left: 0; top: 0; border-radius: 99px; background: var(--green); z-index: 0; transition: transform .4s cubic-bezier(.3,1.3,.5,1), width .4s cubic-bezier(.3,1.3,.5,1); pointer-events: none; }
+
+  /* tap targets: 44px minimum */
+  nav a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 4px; }
+  .hbtn { min-height: 44px; display: inline-flex; align-items: center; }
+  .chip { min-height: 44px; }
+  .copy { min-height: 44px; }
+  .vb-credit a, .more a, .roles a.inl, .work a.inl { display: inline-block; padding-block: 12px; margin-block: -12px; }
+  .reel-btn, .reel-full { width: 44px !important; height: 44px !important; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes m-nudge { 0%, 100% { transform: none; box-shadow: 0 0 0 0 oklch(0.70 0.18 145 / .0); } 20% { transform: translateY(-2px) rotate(-3deg); } 40% { transform: translateY(0) rotate(3deg); box-shadow: 0 0 0 8px oklch(0.70 0.18 145 / .25); } 60% { transform: rotate(-2deg); } 80% { transform: rotate(1deg); box-shadow: 0 0 0 14px oklch(0.70 0.18 145 / 0); } }
+    .hbtn.nudge { animation: m-nudge 1.3s ease-out; }
+    @keyframes m-live { 50% { box-shadow: 0 0 0 6px oklch(0.70 0.18 145 / 0); } 0% { box-shadow: 0 0 0 0 oklch(0.70 0.18 145 / .6); } }
+    .live { animation: m-live 2s ease-out infinite; }
+  }
+  @media (max-width: 760px) {
+    .ask { grid-template-columns: 1fr; }
+    .lanes { grid-template-columns: 1fr; }
+  }
   /* =====================================================================
      MOTION LAYER (2026-09-25). Everything below is decorative and turns
      off completely under prefers-reduced-motion.
@@ -775,7 +849,7 @@
           <defs><path id="circ" d="M100,100 m-92,0 a92,92 0 1,1 184,0 a92,92 0 1,1 -184,0"/></defs>
           <text><textPath href="#circ">Dr. Penguin ◉ Green Glasses Gang ◉ Bangkok ◉ Perpetual Student ◉ </textPath></text>
         </svg>
-        <img src="img/dr-penguin.jpg" width="1080" height="1080" alt="Dr. Penguin, a painted penguin in a graduation cap with a green monocle, holding a phone">
+        <img src="img/dr-penguin.jpg" srcset="img/dr-penguin-640.jpg 640w, img/dr-penguin.jpg 1080w" sizes="(max-width: 760px) 150px, 340px" width="1080" height="1080" alt="Dr. Penguin, a painted penguin in a graduation cap with a green monocle, holding a phone">
       </figure>
       <div class="atxt">
         <p class="art-name"><span class="sr">chlorophilly</span><span class="chars" aria-hidden="true"><span class="ch" style="--i:0">c</span><span class="ch" style="--i:1">h</span><span class="ch" style="--i:2">l</span><span class="ch" style="--i:3">o</span><span class="ch" style="--i:4">r</span><span class="ch" style="--i:5">o</span><span class="ch" style="--i:6">p</span><span class="ch" style="--i:7">h</span><span class="ch" style="--i:8">i</span><span class="ch" style="--i:9">l</span><span class="ch" style="--i:10">l</span><span class="ch" style="--i:11">y</span></span></p>
@@ -786,11 +860,11 @@
   </div>
 
   <div class="divider" aria-hidden="true"></div>
-  <span class="drag-hint mono" aria-hidden="true">drag to rebalance</span>
+  <span class="drag-hint mono" aria-hidden="true">drag the monocle <span class="dh-h">←→</span><span class="dh-v">↑↓</span></span>
   <div class="handle" id="handle" role="slider" tabindex="0" aria-label="Balance between the professional side and the artist side" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50 percent professional, 50 percent artist">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6 3 12l6 6" fill="none" stroke="var(--green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="m15 6 6 6-6 6" fill="none" stroke="var(--green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
-  <span class="readout mono" aria-hidden="true"><span class="rw">pro </span><em id="rPro">50</em> ◉ <em id="rArt">50</em><span class="rw"> art</span><span class="lead-cue" id="leadCue">↓ A first</span></span>
+  <span class="readout mono" aria-hidden="true"><span class="rw">pro </span><em id="rPro">50</em> ◉ <em id="rArt">50</em><span class="rw"> art</span><span class="lead-cue" id="leadCue">↓ pro first</span></span>
   <span class="sr" aria-live="polite" id="leadLive"></span>
 </section>
 
@@ -828,9 +902,9 @@
             <p>Surveyed all 70 pro baseball and football home stadiums in Japan to understand how they become community space beyond game day. Ph.D. in Architecture, The University of Tokyo, MEXT scholar, 2024. Before that, an M.Arch at Chulalongkorn.</p>
           </div>
           <div class="work-vis stadiums" data-group="stadiums">
-            <button class="tile s-main" type="button"><img src="img/stadium-nagasaki-2.jpg" loading="lazy" alt="Transcosmos Stadium Nagasaki seen from the stands, with green hills behind the roof"><figcaption>Transcosmos Stadium Nagasaki</figcaption></button>
-            <button class="tile" type="button"><img src="img/stadium-nagasaki-3.jpg" loading="lazy" alt="Stands and pitch at Transcosmos Stadium Nagasaki"><figcaption>Nagasaki</figcaption></button>
-            <button class="tile" type="button"><img src="img/photo-stadium.jpg" loading="lazy" alt="Empty stands and pitch at Imabari Satoyama Stadium"><figcaption>Imabari Satoyama</figcaption></button>
+            <button class="tile s-main" type="button"><img src="img/stadium-nagasaki-2.jpg" srcset="img/stadium-nagasaki-2-640.jpg 640w, img/stadium-nagasaki-2.jpg 1000w" sizes="(max-width: 760px) 92vw, 30vw" loading="lazy" alt="Transcosmos Stadium Nagasaki seen from the stands, with green hills behind the roof"><figcaption>Transcosmos Stadium Nagasaki</figcaption></button>
+            <button class="tile" type="button"><img src="img/stadium-nagasaki-3.jpg" srcset="img/stadium-nagasaki-3-640.jpg 640w, img/stadium-nagasaki-3.jpg 1000w" sizes="(max-width: 760px) 92vw, 30vw" loading="lazy" alt="Stands and pitch at Transcosmos Stadium Nagasaki"><figcaption>Nagasaki</figcaption></button>
+            <button class="tile" type="button"><img src="img/photo-stadium.jpg" srcset="img/photo-stadium-640.jpg 640w, img/photo-stadium.jpg 1400w" sizes="(max-width: 860px) 46vw, 25vw" loading="lazy" alt="Empty stands and pitch at Imabari Satoyama Stadium"><figcaption>Imabari Satoyama</figcaption></button>
           </div>
         </article>
 
@@ -841,11 +915,22 @@
             <p>A card shop, event venue and 500+ member community in Bangkok. When we opened, Bangkok had no Lorcana scene. No regulars, no events, no local meta. We built it table by table.</p>
           </div>
           <div class="work-vis community" data-group="anubis">
-            <button class="tile" type="button"><img src="img/anubis-community-1.jpg" loading="lazy" alt="A long table of players mid-game at Anubis Cards and Craft"></button>
-            <button class="tile" type="button"><img src="img/anubis-community-2.jpg" loading="lazy" alt="A full room of TCG players at Anubis Cards and Craft"></button>
+            <button class="tile" type="button"><img src="img/anubis-community-1.jpg" srcset="img/anubis-community-1-640.jpg 640w, img/anubis-community-1.jpg 825w" sizes="(max-width: 760px) 92vw, 30vw" loading="lazy" alt="A long table of players mid-game at Anubis Cards and Craft"></button>
+            <button class="tile" type="button"><img src="img/anubis-community-2.jpg" srcset="img/anubis-community-2-640.jpg 640w, img/anubis-community-2.jpg 825w" sizes="(max-width: 760px) 92vw, 30vw" loading="lazy" alt="A full room of TCG players at Anubis Cards and Craft"></button>
             <span class="badge mono">500+ members ◉ Bangkok</span>
           </div>
         </article>
+      </div>
+
+      <div class="ask reveal">
+        <div>
+          <p class="mono ask-k">open to work</p>
+          <p class="ask-h">AI safety, research, or a project that needs Japanese, Thai and English?</p>
+        </div>
+        <div class="ask-act">
+          <a class="btn ink" data-mail="Work enquiry" href="#contact">Email me <span class="ar">→</span></a>
+          <a class="ask-link" href="https://www.linkedin.com/in/watcharawich-jirawongsapan/" target="_blank" rel="me noopener">or LinkedIn <span class="ar">↗</span></a>
+        </div>
       </div>
 
       <div class="sub-head reveal"><p class="mono"><b>A.2</b>In numbers</p><div></div></div>
@@ -919,23 +1004,23 @@
 
       <div data-group="art">
         <figure class="feature latest reveal">
-          <button class="tile" type="button"><img src="img/art-15.jpg" loading="lazy" width="1800" height="1182" alt="A blonde heroine in a red fur-collared jacket holds a glowing green cube, green energy streaming from the weapon in her other hand under a full moon"></button>
+          <button class="tile" type="button" data-title="Latest piece ◉ 2026"><img src="img/art-15.jpg" srcset="img/art-15-640.jpg 640w, img/art-15.jpg 1800w" sizes="(max-width: 760px) 92vw, 1000px" loading="lazy" width="1800" height="1182" alt="A blonde heroine in a red fur-collared jacket holds a glowing green cube, green energy streaming from the weapon in her other hand under a full moon"></button>
           <p class="feature-cap mono"><span>latest</span><span>New piece ◉ 2026</span></p>
         </figure>
         <p class="gal-hint mono">tap any piece to open ◉ zoom in ◉ swipe through</p>
         <div class="gallery reveal">
-          <button class="tile" type="button"><img src="img/art-02.jpg" loading="lazy" alt="Illustration of a young man in a black hoodie wrapped in green lightning"></button>
-          <button class="tile" type="button"><img src="img/art-03.jpg" loading="lazy" alt="Horned sorceress casting green slashes against a purple sky"></button>
-          <button class="tile" type="button"><img src="img/art-13.jpg" loading="lazy" alt="Tiny figure at the end of a vast glowing tunnel"></button>
-          <button class="tile" type="button"><img src="img/art-01.jpg" loading="lazy" alt="Armored heroine with green visor over a dark teal background"></button>
-          <button class="tile" type="button"><img src="img/art-05.jpg" loading="lazy" alt="White-haired swordsman with green glasses on a red background"></button>
-          <button class="tile" type="button"><img src="img/art-08.jpg" loading="lazy" alt="Masked figure under a black umbrella on teal"></button>
-          <button class="tile" type="button"><img src="img/art-09.jpg" loading="lazy" alt="Woman in a kimono holding a skewer, red background"></button>
-          <button class="tile" type="button"><img src="img/art-04.jpg" loading="lazy" alt="Grayscale character whose head opens to reveal an Ethereum logo, red background"></button>
+          <button class="tile" type="button"><img src="img/art-02.jpg" srcset="img/art-02-640.jpg 640w, img/art-02.jpg 1200w" sizes="(max-width: 760px) 44vw, 25vw" loading="lazy" alt="Illustration of a young man in a black hoodie wrapped in green lightning"></button>
+          <button class="tile" type="button"><img src="img/art-03.jpg" srcset="img/art-03-640.jpg 640w, img/art-03.jpg 1200w" sizes="(max-width: 760px) 44vw, 25vw" loading="lazy" alt="Horned sorceress casting green slashes against a purple sky"></button>
+          <button class="tile" type="button"><img src="img/art-13.jpg" srcset="img/art-13-640.jpg 640w, img/art-13.jpg 1000w" sizes="(max-width: 760px) 44vw, 25vw" loading="lazy" alt="Tiny figure at the end of a vast glowing tunnel"></button>
+          <button class="tile" type="button"><img src="img/art-01.jpg" srcset="img/art-01-640.jpg 640w, img/art-01.jpg 1200w" sizes="(max-width: 760px) 44vw, 25vw" loading="lazy" alt="Armored heroine with green visor over a dark teal background"></button>
+          <button class="tile" type="button"><img src="img/art-05.jpg" srcset="img/art-05-640.jpg 640w, img/art-05.jpg 1100w" sizes="(max-width: 760px) 44vw, 25vw" loading="lazy" alt="White-haired swordsman with green glasses on a red background"></button>
+          <button class="tile" type="button"><img src="img/art-08.jpg" srcset="img/art-08-640.jpg 640w, img/art-08.jpg 1100w" sizes="(max-width: 760px) 44vw, 25vw" loading="lazy" alt="Masked figure under a black umbrella on teal"></button>
+          <button class="tile" type="button"><img src="img/art-09.jpg" srcset="img/art-09-640.jpg 640w, img/art-09.jpg 1100w" sizes="(max-width: 760px) 44vw, 25vw" loading="lazy" alt="Woman in a kimono holding a skewer, red background"></button>
+          <button class="tile" type="button"><img src="img/art-04.jpg" srcset="img/art-04-640.jpg 640w, img/art-04.jpg 1000w" sizes="(max-width: 760px) 44vw, 25vw" loading="lazy" alt="Grayscale character whose head opens to reveal an Ethereum logo, red background"></button>
         </div>
 
         <figure class="feature reveal">
-          <button class="tile" type="button"><img src="img/art-12.jpg" loading="lazy" width="1000" height="656" alt="Three silhouetted riders leaping under three white moons above a grayscale battle, eyes glowing green"></button>
+          <button class="tile" type="button" data-title="Featured ◉ Grayscale world, one green light"><img src="img/art-12.jpg" srcset="img/art-12-640.jpg 640w, img/art-12.jpg 1000w" sizes="(max-width: 760px) 92vw, 1000px" loading="lazy" width="1000" height="656" alt="Three silhouetted riders leaping under three white moons above a grayscale battle, eyes glowing green"></button>
           <p class="feature-cap mono"><span>featured</span><span>Grayscale world ◉ one green light</span></p>
         </figure>
       </div>
@@ -966,33 +1051,43 @@
           </div>
         </div>
         <div class="rail" id="rail" data-group="vibes" aria-label="VIBES TCG cards illustrated by chlorophilly">
-          <button class="tile card" type="button" data-type="character" style="--i:0"><img src="img/vibes/archaeologist-penguin.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Archaeologist Penguin (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:1"><img src="img/vibes/bachelor-birb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Bachelor Birb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:2"><img src="img/vibes/birb-who-finds-the-way.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Birb Who Finds the Way (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:3"><img src="img/vibes/cinematic-birb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Cinematic Birb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:4"><img src="img/vibes/frostbitten-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Frostbitten Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:5"><img src="img/vibes/inferno-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Inferno Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:6"><img src="img/vibes/lil-balanced.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Lil Balanced (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:7"><img src="img/vibes/lumberjack-penguin.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Lumberjack Penguin (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:8"><img src="img/vibes/nightveil-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Nightveil Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:9"><img src="img/vibes/pizza-penguin.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Pizza Penguin (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:10"><img src="img/vibes/protector-penguin.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Protector Penguin (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:11"><img src="img/vibes/quantum-birb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Quantum Birb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:12"><img src="img/vibes/stonebreaker-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Stonebreaker Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:13"><img src="img/vibes/stormreaper-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Stormreaper Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:14"><img src="img/vibes/the-great-pengsby.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: The Great Pengsby (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="character" style="--i:15"><img src="img/vibes/the-rodromancer.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: The Rodromancer (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="fit" style="--i:16"><img src="img/vibes/arctic-ring.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Arctic Ring (Fit), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="fit" style="--i:17"><img src="img/vibes/book-of-wonders.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Book of Wonders (Fit), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="fit" style="--i:18"><img src="img/vibes/heros-shield.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Hero&#x27;s Shield (Fit), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="fit" style="--i:19"><img src="img/vibes/heros-sword.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Hero&#x27;s Sword (Fit), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="action" style="--i:20"><img src="img/vibes/bullish-sentiment.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Bullish Sentiment (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="action" style="--i:21"><img src="img/vibes/double-the-luck.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Double the Luck (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="action" style="--i:22"><img src="img/vibes/on-thin-ice.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: On Thin Ice (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="action" style="--i:23"><img src="img/vibes/reminisce.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Reminisce (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
-          <button class="tile card" type="button" data-type="action" style="--i:24"><img src="img/vibes/step-by-step.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Step by Step (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Archaeologist Penguin ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:0"><img src="img/vibes/archaeologist-penguin.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Archaeologist Penguin (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Bachelor Birb ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:1"><img src="img/vibes/bachelor-birb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Bachelor Birb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Birb Who Finds the Way ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:2"><img src="img/vibes/birb-who-finds-the-way.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Birb Who Finds the Way (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Cinematic Birb ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:3"><img src="img/vibes/cinematic-birb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Cinematic Birb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Frostbitten Wizbirb ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:4"><img src="img/vibes/frostbitten-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Frostbitten Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Inferno Wizbirb ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:5"><img src="img/vibes/inferno-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Inferno Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Lil Balanced ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:6"><img src="img/vibes/lil-balanced.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Lil Balanced (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Lumberjack Penguin ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:7"><img src="img/vibes/lumberjack-penguin.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Lumberjack Penguin (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Nightveil Wizbirb ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:8"><img src="img/vibes/nightveil-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Nightveil Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Pizza Penguin ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:9"><img src="img/vibes/pizza-penguin.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Pizza Penguin (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Protector Penguin ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:10"><img src="img/vibes/protector-penguin.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Protector Penguin (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Quantum Birb ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:11"><img src="img/vibes/quantum-birb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Quantum Birb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Stonebreaker Wizbirb ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:12"><img src="img/vibes/stonebreaker-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Stonebreaker Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Stormreaper Wizbirb ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:13"><img src="img/vibes/stormreaper-wizbirb.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Stormreaper Wizbirb (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="The Great Pengsby ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:14"><img src="img/vibes/the-great-pengsby.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: The Great Pengsby (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="The Rodromancer ◉ Character ◉ VIBES TCG" type="button" data-type="character" style="--i:15"><img src="img/vibes/the-rodromancer.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: The Rodromancer (Character), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Arctic Ring ◉ Fit ◉ VIBES TCG" type="button" data-type="fit" style="--i:16"><img src="img/vibes/arctic-ring.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Arctic Ring (Fit), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Book of Wonders ◉ Fit ◉ VIBES TCG" type="button" data-type="fit" style="--i:17"><img src="img/vibes/book-of-wonders.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Book of Wonders (Fit), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Hero&#x27;s Shield ◉ Fit ◉ VIBES TCG" type="button" data-type="fit" style="--i:18"><img src="img/vibes/heros-shield.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Hero&#x27;s Shield (Fit), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Hero&#x27;s Sword ◉ Fit ◉ VIBES TCG" type="button" data-type="fit" style="--i:19"><img src="img/vibes/heros-sword.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Hero&#x27;s Sword (Fit), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Bullish Sentiment ◉ Action ◉ VIBES TCG" type="button" data-type="action" style="--i:20"><img src="img/vibes/bullish-sentiment.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Bullish Sentiment (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Double the Luck ◉ Action ◉ VIBES TCG" type="button" data-type="action" style="--i:21"><img src="img/vibes/double-the-luck.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Double the Luck (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="On Thin Ice ◉ Action ◉ VIBES TCG" type="button" data-type="action" style="--i:22"><img src="img/vibes/on-thin-ice.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: On Thin Ice (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Reminisce ◉ Action ◉ VIBES TCG" type="button" data-type="action" style="--i:23"><img src="img/vibes/reminisce.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Reminisce (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
+          <button class="tile card" data-title="Step by Step ◉ Action ◉ VIBES TCG" type="button" data-type="action" style="--i:24"><img src="img/vibes/step-by-step.jpg" width="365" height="510" loading="lazy" alt="VIBES TCG card: Step by Step (Action), illustrated by chlorophilly"><span class="foil" aria-hidden="true"></span></button>
         </div>
         <p class="mono vb-credit">Illus. chlorophilly ◉ Orange Cap Games ◉ <a href="https://www.vibes.game/spoiler" target="_blank" rel="noopener">See them in the card library ↗</a></p>
+        <div class="ask art reveal">
+          <div>
+            <p class="mono ask-k"><i class="live"></i>commissions open</p>
+            <p class="ask-h">Want cards, a playmat or a character like these?</p>
+            <p class="ask-sub mono">TCG card art ◉ Playmats ◉ Character design</p>
+          </div>
+          <div class="ask-act">
+            <a class="btn solid" data-mail="Commission enquiry" href="#contact">Ask about a commission <span class="ar">→</span></a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1027,10 +1122,10 @@
         </div>
       </div>
       <div class="photos reveal" data-group="photos">
-        <button class="tile" type="button"><img src="img/photo-stadium.jpg" loading="lazy" alt="Empty stadium stands and a green pitch under a blue sky, Japan"><figcaption>Off day, Japan</figcaption></button>
-        <button class="tile" type="button"><img src="img/photo-lake.jpg" loading="lazy" alt="Philly sitting on a wooden pier over a still mountain lake"><figcaption>Somewhere quiet, Austria</figcaption></button>
-        <button class="tile" type="button"><img src="img/photo-matchday.jpg" loading="lazy" alt="Supporters in blue waving flags outside a stadium on matchday"><figcaption>Matchday, Japan</figcaption></button>
-        <button class="tile" type="button"><img src="img/photo-jelly.jpg" loading="lazy" alt="Jellyfish drifting in a round glowing aquarium tank"><figcaption>A monocle, basically</figcaption></button>
+        <button class="tile" type="button"><img src="img/photo-stadium.jpg" srcset="img/photo-stadium-640.jpg 640w, img/photo-stadium.jpg 1400w" sizes="(max-width: 860px) 46vw, 25vw" loading="lazy" alt="Empty stadium stands and a green pitch under a blue sky, Japan"><figcaption>Off day, Japan</figcaption></button>
+        <button class="tile" type="button"><img src="img/photo-lake.jpg" srcset="img/photo-lake-640.jpg 640w, img/photo-lake.jpg 1400w" sizes="(max-width: 860px) 46vw, 25vw" loading="lazy" alt="Philly sitting on a wooden pier over a still mountain lake"><figcaption>Somewhere quiet, Austria</figcaption></button>
+        <button class="tile" type="button"><img src="img/photo-matchday.jpg" srcset="img/photo-matchday-640.jpg 640w, img/photo-matchday.jpg 1400w" sizes="(max-width: 860px) 46vw, 25vw" loading="lazy" alt="Supporters in blue waving flags outside a stadium on matchday"><figcaption>Matchday, Japan</figcaption></button>
+        <button class="tile" type="button"><img src="img/photo-jelly.jpg" srcset="img/photo-jelly-640.jpg 640w, img/photo-jelly.jpg 1400w" sizes="(max-width: 860px) 46vw, 25vw" loading="lazy" alt="Jellyfish drifting in a round glowing aquarium tank"><figcaption>A monocle, basically</figcaption></button>
       </div>
       <p class="mono more">More on <a href="https://www.instagram.com/chlorophilly/" target="_blank" rel="noopener">@chlorophilly ↗</a></p>
     </div>
@@ -1040,8 +1135,22 @@
   <section class="contact wrap" id="contact" aria-labelledby="contact-h">
     <p class="mono" style="color:var(--muted);margin:0 0 12px">A + B ◉ contact</p>
     <h2 id="contact-h" class="reveal">Say hi<span>.</span></h2>
-    <p class="mono open-now"><i></i>Commissions open ◉ TCG card art ◉ Playmats ◉ Character design</p>
-    <p class="lede" style="margin-bottom:22px">Research, red teaming, business, commissions, playmats, collabs. Or just a good card game story.</p>
+    <p class="lede" style="margin-bottom:26px">Pick a lane, or just send a good card game story.</p>
+    <div class="lanes">
+      <a class="lane pro" data-mail="Work enquiry" href="#contact">
+        <span class="lane-k mono"><b>A</b>professional</span>
+        <span class="lane-h">Work with me</span>
+        <span class="lane-s">AI red teaming ◉ research ◉ Japanese, Thai, English ◉ business</span>
+        <span class="lane-go mono">Email <span class="ar">→</span></span>
+      </a>
+      <a class="lane art" data-mail="Commission enquiry" href="#contact">
+        <span class="lane-k mono"><b>B</b>artist <i class="live"></i>commissions open</span>
+        <span class="lane-h">Commission art</span>
+        <span class="lane-s">TCG card art ◉ Playmats ◉ Character design</span>
+        <span class="lane-go mono">Email <span class="ar">→</span></span>
+      </a>
+    </div>
+    <p class="mono or-direct">or write directly</p>
     <p style="margin:0">
       <a class="email" id="email" href="#contact" data-u="contact" data-d="chlorophilly.com">contact [at] chlorophilly.com</a>
       <button class="btn copy" id="copy" type="button" hidden>copy</button>
@@ -1072,6 +1181,7 @@
 
 <footer class="wrap mono">
   <span>Two sides. Same person. 🐧</span>
+  <a class="totop" href="#top">Back to the monocle <span class="ar">↑</span></a>
   <span>© <span id="yr">2026</span> Watcharawich Jirawongsapan</span>
 </footer>
 
@@ -1084,6 +1194,7 @@
     <button class="lbb" type="button" id="lbZoom">zoom +</button>
     <button class="lbb" type="button" id="lbClose">close ✕</button>
   </div>
+  <p class="lb-cap mono" id="lbCap" aria-live="polite"></p>
   <p class="lb-tip mono">tap or scroll to zoom ◉ drag to look around ◉ pinch on phones ◉ swipe for next</p>
 </dialog>
 
@@ -1113,6 +1224,7 @@
   const em = document.getElementById('email');
   const addr = em.dataset.u + '@' + em.dataset.d;
   em.textContent = addr; em.href = 'mailto:' + addr;
+  document.querySelectorAll('[data-mail]').forEach(a => { a.href = 'mailto:' + addr + '?subject=' + encodeURIComponent(a.dataset.mail); });
   const cp = document.getElementById('copy');
   if (navigator.clipboard) {
     cp.hidden = false;
@@ -1153,7 +1265,7 @@
     const first = lead === 'art' ? chB : chA, second = lead === 'art' ? chA : chB;
     mainEl.prepend(first); first.after(bridge); bridge.after(second);
     navEl.prepend(lead === 'art' ? navB : navA);
-    leadCue.textContent = lead === 'art' ? '↓ B first' : '↓ A first';
+    leadCue.textContent = lead === 'art' ? '↓ art first' : '↓ pro first';
     leadCue.classList.remove('flash'); void leadCue.offsetWidth; leadCue.classList.add('flash');
     leadLive.textContent = lead === 'art' ? 'Scrolling down now shows the artist side first.' : 'Scrolling down now shows the professional side first.';
   }
@@ -1228,6 +1340,7 @@
 
   // Zoomable image viewer
   const lb = document.getElementById('lb'), stage = document.getElementById('lbStage'), vImg = document.getElementById('lbImg');
+  const lbCap = document.getElementById('lbCap');
   const lbCount = document.getElementById('lbCount'), lbPrev = document.getElementById('lbPrev'), lbNext = document.getElementById('lbNext'), lbZoom = document.getElementById('lbZoom');
   let group = [], idx = 0, s = 1, tx = 0, ty = 0;
   const ptrs = new Map(); let start = null, pinch = null, moved = false;
@@ -1252,7 +1365,8 @@
   const resetZ = () => { s = 1; tx = 0; ty = 0; applyT(); };
   const show = () => {
     const im = group[idx].querySelector('img');
-    vImg.src = im.currentSrc || im.src; vImg.alt = im.alt;
+    vImg.src = im.src; vImg.alt = im.alt;
+    lbCap.textContent = group[idx].dataset.title || '';
     vImg.classList.toggle('small', (im.naturalWidth || 9999) < 600);
     lbCount.textContent = `${idx + 1} / ${group.length}`;
     lbPrev.hidden = lbNext.hidden = group.length < 2;
@@ -1341,6 +1455,55 @@
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
   }
 
+
+
+  // =====================================================================
+  // UX LAYER (2026-10-22): arrows, filter indicator, a well-timed nudge
+  // =====================================================================
+  (() => {
+    // wrap trailing arrows so they can nudge on hover
+    document.querySelectorAll('.btn, .links a .mono, .vb-credit a, .more a').forEach(el => {
+      if (el.querySelector('.ar')) return;
+      const last = el.lastChild;
+      if (last && last.nodeType === 3) {
+        const m = last.textContent.match(/^(.*?)([↓↗→↑])\s*$/s);
+        if (m) { last.textContent = m[1]; const sp = document.createElement('span'); sp.className = 'ar'; sp.textContent = m[2]; el.append(sp); }
+      }
+    });
+
+    document.querySelectorAll('.ar').forEach(a => { const c = a.textContent.trim(); a.classList.add(c === '↓' ? 'd' : c === '↑' ? 'u' : c === '↗' ? 'ne' : 'r'); });
+
+    // filter chips: a green pill slides to the active filter
+    const chipsWrap = document.querySelector('.chips');
+    if (chipsWrap) {
+      const ind = document.createElement('span'); ind.className = 'chip-ind'; ind.setAttribute('aria-hidden', 'true'); chipsWrap.prepend(ind);
+      const place = (instant) => {
+        const on = chipsWrap.querySelector('.chip.on'); if (!on) return;
+        if (instant) ind.style.transition = 'none';
+        ind.style.width = on.offsetWidth + 'px'; ind.style.height = on.offsetHeight + 'px';
+        ind.style.transform = `translate(${on.offsetLeft}px, ${on.offsetTop}px)`;
+        if (instant) { void ind.offsetWidth; ind.style.transition = ''; }
+      };
+      chipsWrap.classList.add('has-ind');
+      place(true);
+      chipsWrap.addEventListener('click', () => setTimeout(place, 0));
+      addEventListener('resize', () => place(true));
+      document.fonts && document.fonts.ready.then(() => place(true));
+    }
+
+    // once per visit: when someone has seen the work, the header Contact button says hello
+    if (!reduce && 'IntersectionObserver' in window) {
+      const hbtn = document.querySelector('.hbtn');
+      let done = false;
+      const io = new IntersectionObserver((es) => es.forEach(e => {
+        if (done || !e.isIntersecting) return;
+        done = true; io.disconnect();
+        hbtn.classList.add('nudge');
+        setTimeout(() => hbtn.classList.remove('nudge'), 1600);
+      }), { threshold: 0.6 });
+      document.querySelectorAll('.ask').forEach(el => io.observe(el));
+    }
+  })();
 
   // =====================================================================
   // SHOWREEL + VIBES CARDS (2026-10-18)
